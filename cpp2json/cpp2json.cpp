@@ -164,6 +164,7 @@ int main(int argc, const char ** argv) {
 
 	Return CXChildVisit_Break to stop traversal, CXChildVisit_Continue to continue traversing the siblings of the current cursor without visiting its children, or CXChildVisit_Recurse to visit the children of the current cursor
 */
+
 CXChildVisitResult visit(CXCursor c, CXCursor parent, CXClientData client_data) {
 
 	VisitorData& vd = *(VisitorData *)client_data;
@@ -205,7 +206,7 @@ CXChildVisitResult visit(CXCursor c, CXCursor parent, CXClientData client_data) 
 	if(clang_Location_isFromMainFile(loc) == 0 ) {
 		// skip it?
 		//return CXChildVisit_Continue;
-		doVisitChildren = false;
+		//doVisitChildren = false;
 	}	
 
 	// create a node in the JSON for this AST node
@@ -325,6 +326,11 @@ CXChildVisitResult visit(CXCursor c, CXCursor parent, CXClientData client_data) 
 		vd1.indent = vd.indent+1;
 		vd1.container = &jkids;
 		clang_visitChildren(c, visit, &vd1);
+
+		/*
+			Thoughts: 
+			- it would be nice to avoid the singular CompoundStmt that all function bodies have, and just say function.body = [], but I can't fingure out how to avoid it. CompoundStmt can appear in other blocks of code and shouldn't be skipped, as it provides scope. I guess if we know the current cursor is a function, we can analyze the types of the children in a more nuanced way rather than assigning to [nodes]?
+		*/
 		if (jkids.size()) {
 			jnode["nodes"] = jkids;
 		}
