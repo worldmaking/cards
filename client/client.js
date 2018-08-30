@@ -1,3 +1,39 @@
+
+/////////////// EDITOR STUFF
+
+function ast2html(ast, parent, root) {
+	let kind = ast.ast;
+	let loc = ast.loc;
+	let locstr = `${loc.filepath}@${loc.begin.line}:${loc.begin.col}-${loc.end.line}:${loc.end.col}`;
+	let summary = kind + " " + ast.name;
+	if (kind == "FunctionTemplate" || kind == "FunctionDecl" || kind == "CXXMethod") {
+		summary += "()"
+	}
+	let filecode = root.files[loc.filepath];
+	let code = filecode.substr(loc.begin.char, loc.end.char-loc.begin.char);
+	let div = $('<div class="ast '+kind.toLowerCase()+'" />')
+		.html(summary)
+		.on('click', function(e) {
+			// hide/show on click
+			div.children().toggle();
+			e.stopPropagation();
+		})
+		.appendTo(parent);
+
+	$('<textarea />').text(code).appendTo(div).hide();
+
+	if (ast.nodes) {
+		for (node of ast.nodes) {
+		ast2html(node, div, root);
+		}
+	}
+
+	// hide or show this?
+	//div.children().hide();
+}
+
+/////////////////// WEBSOCKET STUFF
+
 var ws;
 function ws_connect(opt) {
 	ws = new WebSocket(opt.transport+'://'+opt.host+':'+opt.port, opt.protocols);
@@ -27,7 +63,7 @@ ws_connect({
 		console.log('websocket opened');
 		// once connected, request the current scene:
 		ws.send(JSON.stringify({
-			type: "get_pat",
+			type: "get_ast",
 			date: Date.now()
 		}));
 	},
@@ -54,12 +90,16 @@ ws_connect({
 
 function handleMessage(msg) {
 	switch (msg.type) {
-		case "set_pat": {
+		case "set_ast": {
 
 			// update whole scene based on msg.value
 			console.log(msg.value);
 
+			let ast = msg.value;
+			$("#tree").children().remove();
+			ast2html(ast, $("#tree"), ast);
 			break;
 		}
 	}
 }
+

@@ -35,12 +35,18 @@ struct VisitorData {
 
 CXChildVisitResult visit(CXCursor c, CXCursor parent, CXClientData client_data);
 
+json jdoc = {
+	{ "files", json::object() },
+	{ "nodes", json::array() }
+};
+CXTranslationUnit unit;
 CXFile cfile;
 std::string filetext;
 
 // turn on to put loc info in the JSON tree
-bool doesJsonHaveLocations = false;
+bool doesJsonHaveLocations = true;
 bool doesJsonHaveComments = true;
+bool doesJsonHaveSources = true;
 
 int main(int argc, const char ** argv) {
 
@@ -84,7 +90,7 @@ int main(int argc, const char ** argv) {
 		// | CXTranslationUnit_KeepGoing // don't give up with fatal errors (e.g. missing includes)
 		// | CXTranslationUnit_SingleFileParse
 		;
-	CXTranslationUnit unit = clang_parseTranslationUnit(
+	unit = clang_parseTranslationUnit(
 		index,
 		filename, 
 		args, nargs, // command line args
@@ -130,12 +136,29 @@ int main(int argc, const char ** argv) {
 	// for f in unit.get_includes(): print '\t'*f.depth, f.include.name
 
 	// start building a JSON for the output:
-	json jdoc = {
-	 	{ "ast", clang_getCString(clang_getCursorKindSpelling(clang_getCursorKind(cursor))) },
-		{ "filepath", clang_getCString(clang_getTranslationUnitSpelling(unit)) },
-		{ "nodes", json::array() }
-	};
+	jdoc["ast"] = clang_getCString(clang_getCursorKindSpelling(clang_getCursorKind(cursor)));
 	//printf("json started\n");
+
+	// store node's location in the JSON?
+	if (doesJsonHaveLocations) {
+		// get location info:
+		// Note: loc might not be the start of the range (e.g. it could be the where the name of a function is)
+		CXSourceLocation loc = clang_getCursorLocation(cursor);
+		CXSourceRange range = clang_getCursorExtent(cursor);
+		CXSourceLocation start = clang_getRangeStart(range);
+		CXSourceLocation end = clang_getRangeEnd(range);
+		CXFile file;
+		unsigned line, column, offset;
+		unsigned line1, column1, offset1;
+		clang_getSpellingLocation(start, &file, &line, &column, &offset);
+		clang_getSpellingLocation(end, &file, &line1, &column1, &offset1);
+		CXString filepath = clang_getFileName(file);
+		jdoc["loc"] = { 
+			{"filepath", clang_getCString(filepath) },
+			{"begin", { {"line", line}, {"col", column}, {"char", offset} } }, 
+			{"end", { {"line", line1}, {"col", column1}, {"char", offset1} } }
+		};
+	}
 
 	// visit all the tree starting from the unit root:
 	VisitorData vd;
@@ -143,6 +166,11 @@ int main(int argc, const char ** argv) {
 	//printf("begin visit\n");
 	clang_visitChildren(cursor, visit, &vd);
 	//printf("json complete\n");
+
+	// add all the file sources:
+
+
+	//if (file == cfile) jnode["text"] = filetext.substr(offset, offset1-offset);
 
 	// cleanup:
 	clang_disposeTranslationUnit(unit);
@@ -178,6 +206,9 @@ CXChildVisitResult visit(CXCursor c, CXCursor parent, CXClientData client_data) 
 		//clang_visitChildren(c, visit, client_data);
 		return CXChildVisit_Recurse;
 	}
+
+	//unsigned clang_isDeclaration(enum CXCursorKind);
+	//CINDEX_LINKAGE unsigned clang_isReference(enum CXCursorKind);
 	
 	// get more node info:
 	CXString kind_str = clang_getCursorKindSpelling(kind);
@@ -199,15 +230,18 @@ CXChildVisitResult visit(CXCursor c, CXCursor parent, CXClientData client_data) 
 	clang_getSpellingLocation(start, &file, &line, &column, &offset);
 	clang_getSpellingLocation(end, &file, &line1, &column1, &offset1);
 	CXString filepath = clang_getFileName(file);
+	const char * filepath_cstr = clang_getCString(filepath);
   	
-	printf("%s%s in %s from line %d:%d to line %d:%d:%s of type: <%s>\n", std::string(vd.indent,'-').c_str(), clang_getCString(kind_str), clang_getCString(filepath), line, column, line1, column1, name, clang_getCString(ctype_str));
+	//printf("%s%s in %s from line %d:%d to line %d:%d:%s of type: <%s>\n", std::string(vd.indent,'-').c_str(), clang_getCString(kind_str), clang_getCString(filepath), line, column, line1, column1, name, clang_getCString(ctype_str));
 	clang_disposeString(kind_str);
 
-	if(clang_Location_isFromMainFile(loc) == 0 ) {
-		// skip it?
-		//return CXChildVisit_Continue;
-		//doVisitChildren = false;
-	}	
+	// has this file been added to the jdoc yet?
+	//f (!clang_Location_isInSystemHeader(loc)) { // don't add system header sources?
+		if (doesJsonHaveSources && jdoc["files"].find(filepath_cstr) == jdoc["files"].end()) {
+			size_t filesize;
+			jdoc["files"][filepath_cstr] = clang_getFileContents(unit, file, &filesize);
+		}
+	//}
 
 	// create a node in the JSON for this AST node
 	json jnode = {
@@ -244,6 +278,10 @@ CXChildVisitResult visit(CXCursor c, CXCursor parent, CXClientData client_data) 
 		jnode["type"] = clang_getCString(ctype_str);
 	}
 
+	if (clang_isDeclaration(kind)) jnode["isDecl"] = true;
+	if (clang_isExpression(kind)) jnode["isExpr"] = true;
+	if (clang_isStatement(kind)) jnode["isStat"] = true;
+
 	switch(kind) {
 	case CXCursor_FunctionDecl:
 	case CXCursor_CXXMethod: {
@@ -267,8 +305,7 @@ CXChildVisitResult visit(CXCursor c, CXCursor parent, CXClientData client_data) 
 	
 	} break;
 	case CXCursor_CompoundStmt: {
-		if (file == cfile)
-		jnode["text"] = filetext.substr(offset, offset1-offset);
+		//if (file == cfile) jnode["text"] = filetext.substr(offset, offset1-offset);
 		//doVisitChildren = false;
 	} break;
 	case CXCursor_FieldDecl:  {
@@ -283,6 +320,7 @@ CXChildVisitResult visit(CXCursor c, CXCursor parent, CXClientData client_data) 
 
 		CXEvalResult res = clang_Cursor_Evaluate(c);
 		CXEvalResultKind ekind = clang_EvalResult_getKind(res);
+		//printf("literal ekind %d %d\n", ekind, CXEval_Int);
 		switch (ekind) {
 			case CXEval_Int:
 				if (clang_Type_getSizeOf(ctype) > sizeof(int)) {
@@ -300,13 +338,13 @@ CXChildVisitResult visit(CXCursor c, CXCursor parent, CXClientData client_data) 
 			case CXEval_StrLiteral:
 			case CXEval_CFStr: 
 			case CXEval_Other:
-			default: {
+			{
 				const char * val = clang_EvalResult_getAsStr(res);
-				
-				if (val) {
-					printf("val %s\n", val);
-					jnode["value"] = clang_EvalResult_getAsStr(res);
-				}
+				if (val) jnode["value"] = clang_EvalResult_getAsStr(res);
+			} break;
+			default: {
+				// just copy the source?
+
 			} break;
 		}
 		clang_EvalResult_dispose(res);
@@ -335,6 +373,7 @@ CXChildVisitResult visit(CXCursor c, CXCursor parent, CXClientData client_data) 
 			jnode["nodes"] = jkids;
 		}
 	}
+
 	jsiblings.push_back(jnode);
 
 	// default behavior: continue to next sibling

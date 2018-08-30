@@ -1,135 +1,44 @@
 /* reset css defaults */
 * {
-	box-sizing: border-box;
-	padding: 0;
-	margin: 0;
-	  vertical-align: baseline;
-  }
-  
-  
-  /* set font */
-  html,
-  input,
-  textarea {
-	font-family: 'Helvetica', sans-serif;
-	font-size: 90%;
-	-webkit-font-smoothing: antialiased;
-  }
-  
-  /* fill page */
-  html {
-	height: 100vh;
-  }
-  
-  /* fill page */
-  .fullpage {
-	position: fixed;
-	width: 100vw;
-	height: 100vh;
-	overflow: hidden;
-  }
-  
-  .patcher_container {
-	position: relative;
-	  width: 100%;
-	  height: 100%;e
-  }
-  
-  .node_editor {
-	  position: absolute;	
-  }
-  
-  svg {
-	  pointer-events: all;  /* paths won't get mouse events without this */
-	
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-  }
-  
-  .patchline {
-	pointer-events: all;  /* paths won't get mouse events without this */
-	fill: none;
-	stroke: #999;
-	stroke-width: 4;
-	stroke-linecap: square;
-	stroke-linejoin: round;
-	stroke-miterlimit: 10;
-	  stroke-dasharray: 5;
-	  
-	  /* stroke: url(#pattern); */
-  }
-  
-  .patchline:hover {
-	stroke: #600;
-  }
-  
-  /* the canvas */
-  #patcher_canvas {
-	position: absolute;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	right: 0;
-	z-index: 0;
-  }
-  
-  .patcher_container #statusbar {
-	position: absolute;
-	bottom: 0;
-	color: #ccc;
-	background: #999;
-	padding: 2px;
-	width: 100%;
-  }
-  
-  .node {
-	border: 1px solid #333;
-	border-radius: 1px;
-	position: absolute;
-	min-width: 2.0em;
-	min-height: 1.5em;
-	background-color: #eee;
-  }
-  
-  .nodetext {
-	padding-left: 2px;
-	padding-right: 2px;
-  }
-  
-  .nlet_row {
-	  display: flex;
-	justify-content: space-between;
-	height: 4px;
-  }
-  
-  .inlet,
-  .outlet {
-	width: 12px;
-	height: 5px;
-	  margin-left: 1px;
-	margin-right: 1px;
-	background-color: #000;
-  }
-  
-  .inlet:hover,
-  .outlet:hover {
-	background-color: #0F0;
-  }
-  
-  #box_editor {
-	z-index: 1;
-	resize: none;
-  }
-  
-  .code_container {
-	background: #eee;
-  }
-  
-  #log {
-	white-space: pre;
-	height: 100%;
-	overflow: scroll;
-  }
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+	vertical-align: baseline;
+}
+
+/* set font */
+html,
+input,
+textarea {
+  font-family: 'Helvetica', sans-serif;
+  font-size: 90%;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* fill page */
+html {
+  height: 100vh;
+}
+
+/* fill page */
+.fullpage {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+}
+
+.hidden {
+    display: none;
+}
+
+.ast {
+  min-height: 1em;
+  min-width: 1em;
+  padding-left: 1em;
+  border: 1px solid #aaa;
+}
+
+.functiondecl {
+  background-color: #ccc;
+}

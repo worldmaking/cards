@@ -105,53 +105,25 @@ server.listen(8080, function() {
 ///////////////////// APP LOGIC /////////////////////
 
 // example 'scene' data structure
-let pat = {
-	nodes: {
-		source1: {
-			pos: [20, 20],
-			inlets: [],
-			outlets: [{ name: "value" }],
-			text: "a source"
-		},
-		source2: {
-			pos: [100, 30],
-			inlets: [],
-			outlets: [{ name: "value1" }, { name: "value2" }, { name: "value3" }],
-			text: "s"
-		},
-		sink1: {
-			pos: [50, 120],
-			inlets: [{ name: "value" }],
-			outlets: [],
-			text: "a sink"
-		},
-		sink2: {
-			pos: [150, 140],
-			inlets: [{ name: "a" }, { name: "b" }],
-			outlets: [],
-			text: "another sink"
-		}
-	},
-	lines: [
-		{ from: "source1", outlet: 0, to: "sink1", inlet: 0 },
-		{ from: "source2", outlet: 0, to: "sink1", inlet: 0 },
-		{ from: "source2", outlet: 2, to: "sink2", inlet: 1 }
-	]
-};
+let ast = JSON.parse(fs.readFileSync(path.join(server_path, "/cpp2json/test.json")));
 
-function send_pat(session) {
+function send_ast(session) {
 	session.socket.send(JSON.stringify({
 		session: session.id,
 		date: Date.now(),
-		type: "set_pat",
-		value: pat
+		type: "set_ast",
+		value: ast
 	}));
 }
 
 function handleMessage(msg, session) {
 	switch (msg.type) {
-		case "get_pat": {
-			send_pat(session);
+		case "get_ast": {
+
+			// TODO -- sync from disk here?
+			ast = JSON.parse(fs.readFileSync(path.join(server_path, "/cpp2json/test.json")));
+
+			send_ast(session);
 			break;
 		}
 	}
