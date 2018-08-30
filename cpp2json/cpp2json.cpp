@@ -318,7 +318,6 @@ CXChildVisitResult visit(CXCursor c, CXCursor parent, CXClientData client_data) 
 	case CXCursor_StringLiteral: 
 	case CXCursor_CharacterLiteral: {
 
-
 		CXEvalResult res = clang_Cursor_Evaluate(c);
 		CXEvalResultKind ekind = clang_EvalResult_getKind(res);
 		//printf("literal ekind %d %d\n", ekind, CXEval_Int);
