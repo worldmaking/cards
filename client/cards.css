@@ -1,0 +1,44 @@
+/* reset css defaults */
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+	vertical-align: baseline;
+}
+
+/* set font */
+html,
+input,
+textarea {
+  font-family: 'Helvetica', sans-serif;
+  font-size: 90%;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* fill page */
+html {
+  height: 100vh;
+}
+
+/* fill page */
+.fullpage {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+}
+
+.hidden {
+    display: none;
+}
+
+.ast {
+  min-height: 1em;
+  min-width: 1em;
+  padding-left: 1em;
+  border: 1px solid #aaa;
+}
+
+.functiondecl {
+  background-color: #ccc;
+}

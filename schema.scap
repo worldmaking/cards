@@ -17,12 +17,12 @@
             <ConnectedNoteIDs>0, 5</ConnectedNoteIDs>
             <PointsToNoteIDs>5</PointsToNoteIDs>
         </Note>
-        <Note ID="2" FontSize="12.0" Position="245.351562,546.476562" Width="57.0">
+        <Note ID="2" FontSize="12.0" Position="244.658087,546.683826" Width="57.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>cpp2json</String>
-            <ConnectedNoteIDs>0</ConnectedNoteIDs>
+            <ConnectedNoteIDs>0, 19</ConnectedNoteIDs>
         </Note>
         <Note ID="3" FontSize="12.0" Position="361.519531,274.472656" Width="25.0">
             <Appearance>
@@ -126,9 +126,29 @@
             <ConnectedNoteIDs>11, 15</ConnectedNoteIDs>
             <PointsToNoteIDs>11</PointsToNoteIDs>
         </Note>
+        <Note ID="18" FontSize="12.0" Position="829.102948,549.759001" Width="57.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>json2cpp</String>
+            <ConnectedNoteIDs>19</ConnectedNoteIDs>
+        </Note>
+        <Note ID="19" FontSize="12.0" Position="553.57457,548.785219" Width="32.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>todo</String>
+            <ConnectedNoteIDs>2, 18</ConnectedNoteIDs>
+        </Note>
+        <Note ID="20" FontSize="12.0" Position="996.601196,425.060632" Width="200.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>New Note</String>
+        </Note>
     </Notes>
     <BackgroundShapes></BackgroundShapes>
-    <AutoFit>0-5, 7, 9-16</AutoFit>
+    <AutoFit>0-5, 7, 9-16, 18-19</AutoFit>
     <NoteStyles>
         <Style Name="Title Text" ID="781D41AA-B033-4EC4-8686-967D2B163097" AffectFontStyle="Yes" AffectAlignment="Yes" AffectTextColor="No" AffectNoteBody="No" AffectFade="No">
             <FontSize>28.0</FontSize>
