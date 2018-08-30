@@ -1,12 +1,32 @@
 
 #include "test.h"
 
+int bar();
+
+struct Jim {
+
+	struct JJ {
+		int x() { return 0; }
+	};
+	
+	int x = 0;
+	double y;
+
+
+	int getx() { return x; }
+};
+
+Jim jim;
+
+int bar() {
+	jim.x++;
+	return 10;
+}
 
 int main(int argc, char ** argv) {
-	int x;
 	{
-		x = 13;
+		jim.x = 13;
 	}
-	return foo(x, 2);
+	return foo(jim.getx(), 2);
 }
 
