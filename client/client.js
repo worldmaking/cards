@@ -14,7 +14,7 @@ $( function() {
 
 function ast2html(ast, parent, root) {
 	let id = ast.id;
-	let kind = ast.ast;
+	let kind = ast.kind;
 	let loc = ast.loc;
 	let locstr = `${loc.filepath}@${loc.begin.line}:${loc.begin.col}-${loc.end.line}:${loc.end.col}`;
 	let summary = `${kind} ${ast.name || ""}`;
