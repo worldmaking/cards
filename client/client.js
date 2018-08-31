@@ -12,18 +12,18 @@ $( function() {
 
 } );
 
-function ast2html(ast, parent, root) {
-	let id = ast.id;
-	let kind = ast.ast;
-	let loc = ast.loc;
+function ast2html(kind, parent, root) {
+	let id = kind.id;
+	let kind = kind.kind;
+	let loc = kind.loc;
 	let locstr = `${loc.filepath}@${loc.begin.line}:${loc.begin.col}-${loc.end.line}:${loc.end.col}`;
-	let summary = `${id} ${kind} ${ast.name || ""}`;
+	let summary = `${id} ${kind} ${kind.name || ""}`;
 	if (kind == "FunctionTemplate" || kind == "FunctionDecl" || kind == "CXXMethod") {
 		summary += "()"
 	}
 	let filecode = root.files[loc.filepath];
 	let code = filecode.substr(loc.begin.char, loc.end.char-loc.begin.char);
-	let div = $('<div id="node_'+id+'" class="ast '+kind.toLowerCase()+'" />')
+	let div = $('<div id="node_'+id+'" class="kind '+kind.toLowerCase()+'" />')
 		.html(summary)
 		.on('click', function(e) {
 			// hide/show on click
@@ -36,8 +36,8 @@ function ast2html(ast, parent, root) {
 
 	$('<textarea />').text(code).appendTo(div).hide();
 
-	if (ast.nodes) {
-		for (node of ast.nodes) {
+	if (kind.nodes) {
+		for (node of kind.nodes) {
 		ast2html(node, div, root);
 		}
 	}
@@ -111,7 +111,7 @@ function highlightLine(loc) {
 		// begin = state[key].begin - 1;
 		// end = state[key].end;
 
-line = loc.begin.line -1
+line =	loc.begin.line -1
 		// tell codemirror to highlight the chosen line
 		// if (pName == paramName){
 		// 	// if the parameter is different from previous change, highlight previously modified parameter as blue in the state.h
@@ -210,13 +210,13 @@ function handleMessage(msg) {
 			// update whole scene based on msg.value
 			// console.log(msg.value);
 
-			let ast = msg.value;
+			let kind = msg.value;
 			cppSource = msg.value.files;
 			let files = Object.keys(cppSource) // set list of files
 			filePicker(files) // update the file list in the filepicker menu
 			cpp2CodeMirror(cppSource[Object.keys(cppSource)[1]], $("#codeView")); //put the cpp code in codemirror
 			$("#tree").children().remove(); // clear the tree
-			ast2html(ast, $("#tree"), ast); // decorate the tree...
+			ast2html(kind, $("#tree"), kind); // decorate the tree...
 			
 			break;
 		}
