@@ -9,7 +9,7 @@ const path = require("path");
 const os = require("os");
 const { exec, execSync, spawn, spawnSync, fork } = require('child_process')
 const terminal = require("web-terminal");
-
+const ip = require('ip')
 
 
 //process.chdir(process.argv[2] || ".");

@@ -3,6 +3,15 @@
 //workaround for cross domain origin requests issue
 document.domain = document.domain;
 
+/////draggable divs:
+$( function() {
+	$( "#tree" ).draggable({ scroll: true, scrollSensitivity: 100});
+	$( "#codeView" ).draggable({ scroll: true, scrollSensitivity: 100 });
+	$( "#terminal" ).draggable({ iframeFix: true, scroll: true, scrollSensitivity: 100 });
+	// $(document.getElementById("terminal").contentWindow.document.getElementById("terminalDiv")).draggable({iframeFix: true, });
+
+} );
+
 function ast2html(ast, parent, root) {
 	let id = ast.id;
 	let kind = ast.ast;
@@ -102,7 +111,7 @@ function highlightLine(loc) {
 		// begin = state[key].begin - 1;
 		// end = state[key].end;
 
-
+line = loc.begin.line -1
 		// tell codemirror to highlight the chosen line
 		// if (pName == paramName){
 		// 	// if the parameter is different from previous change, highlight previously modified parameter as blue in the state.h
