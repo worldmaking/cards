@@ -145,10 +145,11 @@ function cpp2json(){
 			}))
 			return;
 		} else {
+			execSync('git -am')
 			ast = JSON.parse(fs.readFileSync(path.join(server_path, "/cpp2json/test.json"), 'utf8'));
 			return ast;
 
-		}
+		} 
 	})
 	// execSync("")
 	// TODO -- sync from disk here?
