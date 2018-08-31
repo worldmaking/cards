@@ -3,6 +3,14 @@
 //workaround for cross domain origin requests issue
 document.domain = document.domain;
 
+console.log("localStorage",localStorage)
+
+if (localStorage.length === 0) {
+	$("#treeHandle").css({ float: "left", top: 3, left: 20, width: 300 })
+	$("#codeViewHandle").css({ float: "left", top: 3, left: 50, width: 400 })
+	$("#terminalHandle").css({ float: "left", top: 3, left: 50, width: 400 })
+
+}
 // editor positions
 var sPositions = localStorage.positions || "{}",
 			positions = JSON.parse(sPositions);
@@ -31,7 +39,7 @@ function initState (){
 
 			case "treeHandle": {
 				$("#" + id).css(size)
-				// $("terminal").css(size)
+
 			} break;
 
 			case "codeViewHandle": {
