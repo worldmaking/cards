@@ -19,6 +19,7 @@
   "homepage": "https://github.com/worldmaking/cards#readme",
   "dependencies": {
     "express": "4.16.3",
+    "web-terminal": "^0.7.0",
     "ws": "6.0.0"
   }
 }

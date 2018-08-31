@@ -1,5 +1,8 @@
 /////////////// EDITOR STUFF
 
+//workaround for cross domain origin requests issue
+document.domain = document.domain;
+
 function ast2html(ast, parent, root) {
 	let id = ast.id;
 	let kind = ast.ast;
@@ -91,7 +94,6 @@ function cpp2CodeMirror(cppSource) {
 var lastLine; 
 // ///////////////////////////////////////////////////
 function highlightLine(loc) {
-	console.log(loc.begin)
 // provide line highlighting for in the codemirror editor so user can easily spot parameters 
 // in the state.h file:
 // get the begin-end lines of each parameter within the state.h!

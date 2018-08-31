@@ -8,6 +8,8 @@ const fs = require("fs");
 const path = require("path");
 const os = require("os");
 const { exec, execSync, spawn, spawnSync, fork } = require('child_process')
+const terminal = require("web-terminal");
+
 
 
 //process.chdir(process.argv[2] || ".");
@@ -101,6 +103,21 @@ wss.on('connection', function(ws, req) {
 server.listen(8080, function() {
 	console.log('server listening on %d', server.address().port);
 });
+
+// HTTP SERVER for Terminal:
+
+ 
+var terminalApp = http.createServer(function (req, res) {
+  res.writeHead(200, {"Content-Type": "text/plain"});
+  res.end("Hello World\n");
+});
+
+terminalApp.listen(1337);
+console.log("Server running at http://127.0.0.1:1337/");
+
+terminal(terminalApp);
+console.log('Web-terminal accessible at http://' + ip.address() + ':8088/terminal');
+
 
 ///////////////////// APP LOGIC /////////////////////
 
