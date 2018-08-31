@@ -135,7 +135,7 @@ function send_ast(ast, session) {
 
 function cpp2json(filename){
 	execSync("./cpp2json test.cpp test.json", {cwd: path.join(server_path, "cpp2json")}, (stdout, stderr, err) => {
-		// if the code failed to compile, send the error message to the client and prevent committing a broken file
+		// TODO if the code failed to compile, send the error message to the client and prevent committing a broken file
 		if (stderr || err) {
 			var newError = (stderr + err).toString()
 			session.socket.send(JSON.stringify({
