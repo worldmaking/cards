@@ -1,9 +1,3 @@
-// var cm = document.createElement('script');
-// cm.src = '/path/to/imported/script';
-// document.head.appendChild(imported);
-
-
-
 /////////////// EDITOR STUFF
 
 function ast2html(ast, parent, root) {
@@ -23,6 +17,8 @@ function ast2html(ast, parent, root) {
 			// hide/show on click
 			div.children().toggle();
 			e.stopPropagation();
+			console.log(id, loc)
+			highlightLine(loc)
 		})
 		.appendTo(parent);
 
@@ -92,35 +88,38 @@ function cpp2CodeMirror(cppSource) {
 }
 
 // //// Codemirror Highlighting
-
+var lastLine; 
 // ///////////////////////////////////////////////////
-function highlightLine() {
+function highlightLine(loc) {
+	console.log(loc.begin)
 // provide line highlighting for in the codemirror editor so user can easily spot parameters 
 // in the state.h file:
 // get the begin-end lines of each parameter within the state.h!
-	Object.keys(state).forEach(function(key, value) {
-		pName = state[key].paramName;
-		begin = state[key].begin - 1;
-		end = state[key].end;
+	// Object.keys(state).forEach(function(key, value) {
+		// pName = state[key].paramName;
+		// begin = state[key].begin - 1;
+		// end = state[key].end;
+
+
 		// tell codemirror to highlight the chosen line
-		if (pName == paramName){
-			// if the parameter is different from previous change, highlight previously modified parameter as blue in the state.h
-			if (lastLine !== undefined && lastLine !== begin) {
+		// if (pName == paramName){
+		// 	// if the parameter is different from previous change, highlight previously modified parameter as blue in the state.h
+			if (lastLine !== undefined && lastLine !== loc.begin.line) {
 				dv.addLineClass(lastLine, 'background', 'cm-highlight-lastLine');
 			}
 			// if new parameter change, tell cm where to highlight
-			var t = dv.charCoords({line: begin, ch: 0}, "local").top; 
+			var t = dv.charCoords({line: loc.begin.line, ch: loc.begin.char}, "local").top; 
 			var middleHeight = dv.getScrollerElement().offsetHeight / 2; 
 			// focus the editor's page around the line
 			dv.scrollTo(null, t - middleHeight - 5);
 			// apply highlight to the selected parameter-line
-			dv.addLineClass(begin, 'background', 'cm-highlight');
+			dv.addLineClass(loc.begin.line, 'background', 'cm-highlight');
 			// set the cm cursor to the line
-			dv.setCursor({line: begin, ch: window.lastpo});
+			dv.setCursor({line: loc.begin.line, ch: window.lastpo});
 			// remember the current selected line for next time we change a param
-			lastLine = begin;
-		}
-	}) 
+			lastLine = loc.begin.line;
+		// }
+	// }) 
 }
 
 //// clear highlights
