@@ -105,8 +105,6 @@ server.listen(8080, function() {
 });
 
 // HTTP SERVER for Terminal:
-
- 
 var terminalApp = http.createServer(function (req, res) {
   res.writeHead(200, {"Content-Type": "text/plain"});
   res.end("Hello World\n");
@@ -135,7 +133,9 @@ function send_ast(ast, session) {
 
 function cpp2json(filename){
 	execSync("./cpp2json test.cpp test.json", {cwd: path.join(server_path, "cpp2json")}, (stdout, stderr, err) => {
+		
 		// TODO if the code failed to compile, send the error message to the client and prevent committing a broken file
+		// THIS ISN"T WORKING:
 		if (stderr || err) {
 			var newError = (stderr + err).toString()
 			session.socket.send(JSON.stringify({
@@ -169,7 +169,6 @@ function handleMessage(msg, session) {
 		break;
 
 		case "code": {
-			console.log(msg.filename)
 			fs.writeFileSync(path.join(server_path, "cpp2json", msg.filename), msg.value, 'utf8')
 			send_ast(cpp2json(msg.filename), session);
 		}

@@ -3,15 +3,97 @@
 //workaround for cross domain origin requests issue
 document.domain = document.domain;
 
-/////draggable divs:
+// editor positions
+var sPositions = localStorage.positions || "{}",
+			positions = JSON.parse(sPositions);
+// editor sizes
+var sSizes = localStorage.sizes || "{}",
+			sizes = JSON.parse(sSizes);
+
+function initState (){
+	// recall editor views positions
+	
+	$.each(positions, function (id, pos) {
+			$("#" + id).css(pos)
+	})
+
+	// recall editor views sizes
+	
+	$.each(sizes, function (id, size) {
+		// console.log("id" + id, size)
+		switch (id) {
+			case "terminalHandle": {
+				$("#" + id).css(size)
+				height = size.height - 24
+				width = size.width - 5
+				$("#terminal").css({width, height})
+			} break;
+
+			case "treeHandle": {
+				$("#" + id).css(size)
+				// $("terminal").css(size)
+			} break;
+
+			case "codeViewHandle": {
+				$("#" + id).css(size)
+				height = size.height - 44
+				width = size.width - 5
+				$("#codeView").css({width, height})
+			} break;
+
+
+		}
+
+	})
+}
+
+initState()
+////jqueryUI
 $( function() {
-	$( "#treeHandle" ).draggable({ handle: "p", scroll: true, scrollSensitivity: 100});
-	$( "#codeViewHandle" ).draggable({ handle: "p", scroll: true, scrollSensitivity: 100 });
-	$( "#terminalHandle" ).draggable({ iframeFix: true, scroll: true, scrollSensitivity: 100 });
-	// $(document.getElementById("terminal").contentWindow.document.getElementById("terminalDiv")).draggable({iframeFix: true, });
-} );
+	//draggable divs:
+	$( "#treeHandle" ).draggable({ handle: "p", scroll: true, scrollSensitivity: 100, stop: function (event, ui) {
+		positions[this.id] = ui.position
+		localStorage.positions = JSON.stringify(positions)
+		}
+	}).resizable({
+		alsoResize: "#codeView", stop: function (event, ui) {
+			sizes[this.id] = ui.size
+			localStorage.sizes = JSON.stringify(sizes)
+		}
+	});
+
+	$( "#codeViewHandle" ).draggable({ handle: "p", scroll: true, scrollSensitivity: 100, stop: function (event, ui) {
+		positions[this.id] = ui.position
+		localStorage.positions = JSON.stringify(positions)
+		} 
+	}).resizable({
+		alsoResize: "#codeView", stop: function (event, ui) {
+			sizes[this.id] = ui.size
+			localStorage.sizes = JSON.stringify(sizes)
+		}
+	});
+
+	$( "#terminalHandle" ).draggable({ iframeFix: true, scroll: true, scrollSensitivity: 100, stop: function (event, ui) {
+		positions[this.id] = ui.position
+		localStorage.positions = JSON.stringify(positions)
+		} 
+	}).resizable({
+		alsoResize: "#terminal", stop: function (event, ui) {
+	    sizes[this.id] = ui.size
+	    localStorage.sizes = JSON.stringify(sizes)
+		}
+	});
+});
 
 
+// $("#draggable3").draggable({
+//     containment: "#containment-wrapper",
+//     scroll: false,
+//     stop: function (event, ui) {
+//         positions[this.id] = ui.position
+//         localStorage.positions = JSON.stringify(positions)
+//     }
+// });
 
 
 function ast2html(ast, parent, root) {
@@ -105,7 +187,7 @@ function cpp2CodeMirror(cppSource) {
 		mode: "clike",
 		theme: 'one-dark',
   });
-	dv.setSize(500, 900)
+	dv.setSize("100%", "100%")
 
 	//key bindings for left editor
 	var leftMap = {

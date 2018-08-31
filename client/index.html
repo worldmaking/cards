@@ -7,7 +7,7 @@
 
 
 </head>
-<link rel="stylesheet" href="style.css">
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -16,6 +16,8 @@
 <link rel=stylesheet href="cm/themes/one-dark.css">
 <script src="cm/modes/clike.js"></script>
 <link rel="stylesheet" href="jquery-ui.css">
+<!-- apply the main style after the cm css has been applied -->
+<link rel="stylesheet" href="style.css"> 
 
 
 
@@ -23,39 +25,43 @@
 
 
 <body>
-		
-	<div class="fullpage">
+		<div id="treeHandle">
+				
+				<p id="treeP" class="ui-widget-header">Document Tree</p>
+				<div id="tree" ></div>
+
+			</div>
+
+			<div id="codeViewHandle" style="background-color: rgb(0, 0, 0)" position=relative>
+				
+					<p class="ui-widget-header">Source Code</p>
+					<select style="width:50%; overflow: scroll;" id="openFileName" onchange="openFileName(selectedIndex);">
+							<option selected disabled>Select File</option> 
+							<option value="New File...">New File...</option>  
+						</select> 
+						<button id="clearHighlights">Clear Highlight History</button>
+					<div id="codeView" ></div>
+				</div>
+
+				<div id="terminalHandle" style="background-color: rgb(0, 0, 0)">	
+						<p class="ui-widget-header">Terminal</p>
+						<iframe height=590px width=600px id="terminal" src="http://localhost:8088/terminal" height="90%" float></iframe>	
+					</div>
+	<!-- <div class="fullpage">
 		<table>
 			<tr>
 				<td >
 
-					<div id="treeHandle">
-				
-							<p class="ui-widget-header">Document Tree</p>
-							<div id="tree" ></div>
-	
-						</div>
+					
 				</td>
 				<td>
-					<div id="codeViewHandle">
-				
-							<p class="ui-widget-header">Source Code</p>
-							<select style="width:50%; overflow: scroll;" id="openFileName" onchange="openFileName(selectedIndex);">
-									<option selected disabled>Select File</option> 
-									<option value="New File...">New File...</option>  
-								</select> 
-								<button id="clearHighlights">Clear Highlight History</button>
-							<div id="codeView" ></div>
-						</div>
+					
 				</td>
 				<td >
-						<div id="terminalHandle">	
-								<p class="ui-widget-header">Terminal</p>
-								<iframe height=600px width=600px id="terminal" src="http://localhost:8088/terminal" height="90%" float></iframe>	
-							</div>
+						
 					</td>
 			</tr>
-		</table>
+		</table> -->
 
 
 
