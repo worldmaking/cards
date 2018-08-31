@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <title>Cards</title>
+
+
+
+</head>
 <link rel="stylesheet" href="style.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -12,45 +16,52 @@
 <link rel=stylesheet href="cm/themes/one-dark.css">
 <script src="cm/modes/clike.js"></script>
 <link rel="stylesheet" href="jquery-ui.css">
-</head>
+<link rel="stylesheet" href="dragula.css">
+<!-- //great lib for draggin html elements -->
+<script src='bower_components/dragula.js/dist/dragula.js'></script>
+
+
+
+
 <body>
+		
 	<div class="fullpage">
 		<table>
 			<tr>
-				<th >
-					Document Tree
-				</th>
-				<th>
-					Source Code
-				</th>
-
-			</tr>
-			<tr>
-					<td >
-					</td>
-					<td>
-						<select style="width:50%; overflow: scroll;" id="openFileName" onchange="openFileName(selectedIndex);">
-							<option selected disabled>Select File</option> 
-							<option value="New File...">New File...</option>  
-						</select>  
-					</td>
-
-			</tr>
-			<tr>
 				<td >
-						<div id="tree"></div>
+
+					<div id="treeHandle">
+				
+							<p class="ui-widget-header">Document Tree</p>
+							<div id="tree" ></div>
+	
+						</div>
 				</td>
 				<td>
-						<div id="codeView"></div>
+					<div id="codeViewHandle">
+				
+							<p class="ui-widget-header">Source Code</p>
+							<select style="width:50%; overflow: scroll;" id="openFileName" onchange="openFileName(selectedIndex);">
+									<option selected disabled>Select File</option> 
+									<option value="New File...">New File...</option>  
+								</select> 
+								<button id="clearHighlights">Clear Highlight History</button>
+							<div id="codeView" ></div>
+						</div>
 				</td>
-
-			</tr> 
+				<td >
+						<div id="terminalHandle">	
+								<p class="ui-widget-header">Terminal</p>
+								<iframe height=600px width=600px id="terminal" src="http://localhost:8088/terminal" height="90%" float></iframe>	
+							</div>
+					</td>
+			</tr>
 		</table>
 
-<iframe height=200px width=100% id="terminal" src="http://localhost:8088/terminal" height="90%" float></iframe>
 
 
 <script src="client.js"></script>
+
  
 </body> 
 </html>

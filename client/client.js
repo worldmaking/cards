@@ -5,15 +5,17 @@ document.domain = document.domain;
 
 /////draggable divs:
 $( function() {
-	$( "#tree" ).draggable({ scroll: true, scrollSensitivity: 100});
-	$( "#codeView" ).draggable({ scroll: true, scrollSensitivity: 100 });
-	$( "#terminal" ).draggable({ iframeFix: true, scroll: true, scrollSensitivity: 100 });
+	$( "#treeHandle" ).draggable({ handle: "p", scroll: true, scrollSensitivity: 100});
+	$( "#codeViewHandle" ).draggable({ handle: "p", scroll: true, scrollSensitivity: 100 });
+	$( "#terminalHandle" ).draggable({ iframeFix: true, scroll: true, scrollSensitivity: 100 });
 	// $(document.getElementById("terminal").contentWindow.document.getElementById("terminalDiv")).draggable({iframeFix: true, });
-
 } );
 
+
+
+
 function ast2html(ast, parent, root) {
-	console.log(ast)
+	//console.log(ast)
 	let id = ast.id;
 	let kind = ast.kind;
 	let loc = ast.loc;
@@ -30,7 +32,7 @@ function ast2html(ast, parent, root) {
 			// hide/show on click
 			div.children().toggle();
 			e.stopPropagation();
-			console.log(id, loc)
+			//console.log(id, loc)
 			highlightLine(loc)
 		})
 		.appendTo(parent);
@@ -47,7 +49,7 @@ function ast2html(ast, parent, root) {
 	//div.children().hide();
 }
 
-
+var filename;
 ///// File Chooser
 function filePicker(cardsFileList) {
 	// first clear the select element options before populating it again
@@ -58,18 +60,25 @@ function filePicker(cardsFileList) {
 
 	cardsFileList.forEach(function(element) {
 		// console.log(element)
+		// set the filename for the editor to communicate with server...
+		filename = element;
 		var opt = document.createElement('option')
 		opt.appendChild(document.createTextNode(element))
 		opt.value = element
 		sel.appendChild(opt)
+
+		// make sure that the .cpp file is loaded in codemirror first
+		if (element.includes(".cpp")) {
+			sel.selectedIndex = opt.index;
+			openFileName(opt.index)
+
+		}
 	})
 }
 
 function openFileName (selectedIndex){
 	fileIndex = (selectedIndex - 2)
 	cpp2CodeMirror(cppSource[Object.keys(cppSource)[fileIndex]], $("#codeView"));
-
-
 }
 ///// Main test.cpp Codemirror Editor Instance
 function cpp2CodeMirror(cppSource) {
@@ -98,10 +107,52 @@ function cpp2CodeMirror(cppSource) {
   });
 	dv.setSize(500, 900)
 
+	//key bindings for left editor
+	var leftMap = {
+		// OSX
+		"Cmd-S": function(cm){saveCode();},
+		// Windows
+		"Ctrl-S": function(cm){saveCode();}
+	}
+	dv.addKeyMap(leftMap);
+
 }
+
+
+// ////saving	
+// Send current content within CodeMirror's editor to the server.
+function saveCode () {
+  // TODO: figure out how to include the var 'authorName' in this
+  // message, so that git will commit under this client's git username
+  // i.e.  git commit --author="John Doe john@doe.org" -m "message"
+  // also, if "guest" is selected, then make sure server just does a regular commit (no added author flag)
+  // and email
+  // var commitMsg = prompt('Please provide a comment about your changes', 'reticulating splines')
+  // if (commitMsg === null) {
+  //     console.log("space swords are totally cancelled")
+  //       return; //break out of the function early if user cancels
+  //   }
+  //   var message = "edit?" + editorCM.getValue();
+  var changes = dv.getValue()
+  // log('Sent LeftEditor Contents to server: ' + commitMsg)
+	// log('sending: ' + message);
+
+	ws.send(JSON.stringify({
+		//session: session.id,
+		filename: filename,
+		date: Date.now(),
+		type: "code",
+		value: changes
+	}));
+}
+
+
+
+
 
 // //// Codemirror Highlighting
 var lastLine; 
+var lines = []
 // ///////////////////////////////////////////////////
 function highlightLine(loc) {
 // provide line highlighting for in the codemirror editor so user can easily spot parameters 
@@ -112,24 +163,25 @@ function highlightLine(loc) {
 		// begin = state[key].begin - 1;
 		// end = state[key].end;
 
-		line =	loc.begin.line -1
+		beginLine =	loc.begin.line -1
 		// tell codemirror to highlight the chosen line
 		// if (pName == paramName){
 		// 	// if the parameter is different from previous change, highlight previously modified parameter as blue in the state.h
-			if (lastLine !== undefined && lastLine !== line) {
+			if (lastLine !== undefined && lastLine !== beginLine) {
 				dv.addLineClass(lastLine, 'background', 'cm-highlight-lastLine');
 			}
 			// if new parameter change, tell cm where to highlight
-			var t = dv.charCoords({line: line, ch: loc.begin.char}, "local").top; 
+			var t = dv.charCoords({line: beginLine, ch: loc.begin.char}, "local").top; 
 			var middleHeight = dv.getScrollerElement().offsetHeight / 2; 
 			// focus the editor's page around the line
 			dv.scrollTo(null, t - middleHeight - 5);
 			// apply highlight to the selected parameter-line
-			dv.addLineClass(line, 'background', 'cm-highlight');
+			dv.addLineClass(beginLine, 'background', 'cm-highlight');
 			// set the cm cursor to the line
-			dv.setCursor({line: line, ch: window.lastpo});
+			dv.setCursor({line: beginLine, ch: window.lastpo});
 			// remember the current selected line for next time we change a param
-			lastLine = line;
+			lastLine = beginLine;
+			lines.push(beginLine)
 		// }
 	// }) 
 }
@@ -137,14 +189,23 @@ function highlightLine(loc) {
 //// clear highlights
 $(function() {
 	$("#clearHighlights").click( function(){
+
 		Object.keys(lines).forEach(function(key, value) {
-			console.log(lines[key].begin)
-			dv.removeLineClass(lines[key].begin, 'background');
+			// console.log(lines[key].begin)
+
+			dv.removeLineClass(lines[key], 'background');
+			lastLine = undefined;
 
 		});
 	});
 
 })
+
+
+// /////saving
+
+
+
   
 /////////////////// WEBSOCKET STUFF
 

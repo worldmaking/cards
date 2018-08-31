@@ -72,7 +72,7 @@ wss.on('connection', function(ws, req) {
 	
 	// respond to any messages from the client:
 	ws.on('message', function(e) {
-		console.log(e)
+		//console.log(e)
 		if(e instanceof Buffer) {
 			// get an arraybuffer from the message:
 			const ab = e.buffer.slice(e.byteOffset,e.byteOffset+e.byteLength);
@@ -133,17 +133,44 @@ function send_ast(ast, session) {
 	}));
 }
 
-function handleMessage(msg, session) {
-	switch (msg.type) {
-		case "get_ast": {
-
-			execSync("./cpp2json test.cpp test.json", {cwd: path.join(server_path, "cpp2json")})
-			// TODO -- sync from disk here?
+function cpp2json(){
+	execSync("./cpp2json test.cpp test.json", {cwd: path.join(server_path, "cpp2json")}, (stdout, stderr, err) => {
+		if (stderr || err) {
+			var newError = (stderr + err).toString()
+			session.socket.send(JSON.stringify({
+				session: session.id,
+				date: Date.now(),
+				type: "compile_error",
+				value: newError
+			}))
+			return;
+		} else {
 			ast = JSON.parse(fs.readFileSync(path.join(server_path, "/cpp2json/test.json"), 'utf8'));
+			return ast;
 
-
-			send_ast(ast, session);
-			break;
 		}
+	})
+	// execSync("")
+	// TODO -- sync from disk here?
+
+}
+
+function handleMessage(msg, session) {
+	
+	switch (msg.type) {
+
+		case "get_ast": {
+			send_ast(cpp2json(), session);
+		}
+		break;
+
+		case "code": {
+			console.log(msg.filename)
+			fs.writeFileSync(path.join(server_path, "cpp2json", msg.filename), msg.value, 'utf8')
+			send_ast(cpp2json(), session);
+		}
+
+		break
+		
 	}
 }
