@@ -135,6 +135,7 @@ function send_ast(ast, session) {
 
 function cpp2json(filename){
 	execSync("./cpp2json test.cpp test.json", {cwd: path.join(server_path, "cpp2json")}, (stdout, stderr, err) => {
+		// if the code failed to compile, send the error message to the client and prevent committing a broken file
 		if (stderr || err) {
 			var newError = (stderr + err).toString()
 			session.socket.send(JSON.stringify({
@@ -144,22 +145,18 @@ function cpp2json(filename){
 				value: newError
 			}))
 			return;
-		} 
-
-
-		
+		} 		
 	})
 	console.log("successful compile")
+	// if the file has been modified by the client:
 	if (filename) {
+		// add and commit it to the repo
 		execSync('git add ' + path.join(server_path, "cpp2json", filename))
 		execSync('git commit -am "successful compile"')
 	}
-	
+	// read the result of cpp2json 
 	ast = JSON.parse(fs.readFileSync(path.join(server_path, "/cpp2json/test.json"), 'utf8'));
 	return ast;
-	// execSync("")
-	// TODO -- sync from disk here?
-
 }
 
 function handleMessage(msg, session) {
