@@ -144,13 +144,15 @@ function cpp2json(){
 				value: newError
 			}))
 			return;
-		} else {
-			execSync('git -am')
-			ast = JSON.parse(fs.readFileSync(path.join(server_path, "/cpp2json/test.json"), 'utf8'));
-			return ast;
-
 		} 
+
+
+		
 	})
+	console.log("successful compile")
+	execSync('git commit -am "successful compile"')
+	ast = JSON.parse(fs.readFileSync(path.join(server_path, "/cpp2json/test.json"), 'utf8'));
+	return ast;
 	// execSync("")
 	// TODO -- sync from disk here?
 
