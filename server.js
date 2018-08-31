@@ -122,7 +122,7 @@ console.log('Web-terminal accessible at http://' + ip.address() + ':8088/termina
 ///////////////////// APP LOGIC /////////////////////
 
 // example 'scene' data structure
-let ast = JSON.parse(fs.readFileSync(path.join(server_path, "/cpp2json/test.json")));
+let ast = JSON.parse(fs.readFileSync(path.join(server_path, "/cpp2json/test.json"), "utf8"));
 
 function send_ast(ast, session) {
 	session.socket.send(JSON.stringify({
@@ -139,7 +139,7 @@ function handleMessage(msg, session) {
 
 			execSync("./cpp2json test.cpp test.json", {cwd: path.join(server_path, "cpp2json")})
 			// TODO -- sync from disk here?
-			ast = JSON.parse(fs.readFileSync(path.join(server_path, "/cpp2json/test.json")));
+			ast = JSON.parse(fs.readFileSync(path.join(server_path, "/cpp2json/test.json"), 'utf8'));
 
 
 			send_ast(ast, session);

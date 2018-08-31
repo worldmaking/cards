@@ -17,7 +17,7 @@ function ast2html(ast, parent, root) {
 	let kind = ast.ast;
 	let loc = ast.loc;
 	let locstr = `${loc.filepath}@${loc.begin.line}:${loc.begin.col}-${loc.end.line}:${loc.end.col}`;
-	let summary = `${id} ${kind} ${ast.name || ""}`;
+	let summary = `${kind} ${ast.name || ""}`;
 	if (kind == "FunctionTemplate" || kind == "FunctionDecl" || kind == "CXXMethod") {
 		summary += "()"
 	}
