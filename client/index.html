@@ -5,11 +5,55 @@
 <title>Cards</title>
 <link rel="stylesheet" href="style.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="cm/codemirror.css">
+<script src="cm/codemirror.js"></script>
+<link rel=stylesheet href="cm/one-dark.css">
+<script src="cm/modes/clike.js"></script>
+<link rel="stylesheet" href="jquery-ui.css">
+
+
+
 </head>
 <body>
+
+
 	<div class="fullpage">
-		<div id="tree"></div>
-	  </div>	  
-</body> 
+		<table>
+			<tr>
+				<th >
+					Document Tree
+				</th>
+				<th>
+					Source Code
+				</th>
+			</tr>
+
+
+			<tr>
+					<td >
+					</td>
+					<td>
+
+							<select style="width:50%; overflow: scroll;" id="openFileName" onchange="openFileName(selectedIndex);">
+									<option selected disabled>Select File</option> 
+									<option value="New File...">New File...</option>  
+							</select>  
+					</td>
+				</tr>
+
+			<tr>
+				<td >
+						<div id="tree"></div>
+				</td>
+				<td>
+						<div id="codeView"></div>
+
+				</td>
+			</tr>
+		</table>
+
+		</div>	 
 <script src="client.js"></script>
+ 
+</body> 
 </html>

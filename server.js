@@ -7,6 +7,8 @@ const url = require('url');
 const fs = require("fs");
 const path = require("path");
 const os = require("os");
+const { exec, execSync, spawn, spawnSync, fork } = require('child_process')
+
 
 //process.chdir(process.argv[2] || ".");
 const project_path = process.cwd();
@@ -35,8 +37,7 @@ function send_all_clients(msg) {
 		client.send(msg);
 	});
 }
-var AST = fs.readFileSync("client/ast.json")
-console.log(AST)
+
 // whenever a client connects to this websocket:
 wss.on('connection', function(ws, req) {
     // it defines a new session:
@@ -52,7 +53,6 @@ wss.on('connection', function(ws, req) {
 	// You might use location.query.access_token to authenticate or share sessions
 	// or req.headers.cookie (see http://stackoverflow.com/a/16395220/151312)
 
-	ws.send(AST)
 	
 	ws.on('error', function (e) {
 		if (e.message === "read ECONNRESET") {
@@ -107,7 +107,7 @@ server.listen(8080, function() {
 // example 'scene' data structure
 let ast = JSON.parse(fs.readFileSync(path.join(server_path, "/cpp2json/test.json")));
 
-function send_ast(session) {
+function send_ast(ast, session) {
 	session.socket.send(JSON.stringify({
 		session: session.id,
 		date: Date.now(),
@@ -120,10 +120,12 @@ function handleMessage(msg, session) {
 	switch (msg.type) {
 		case "get_ast": {
 
+			execSync("./cpp2json test.cpp test.json", {cwd: path.join(server_path, "cpp2json")})
 			// TODO -- sync from disk here?
 			ast = JSON.parse(fs.readFileSync(path.join(server_path, "/cpp2json/test.json")));
 
-			send_ast(session);
+
+			send_ast(ast, session);
 			break;
 		}
 	}

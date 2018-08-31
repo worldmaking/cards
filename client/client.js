@@ -1,7 +1,13 @@
+// var cm = document.createElement('script');
+// cm.src = '/path/to/imported/script';
+// document.head.appendChild(imported);
+
+
 
 /////////////// EDITOR STUFF
 
 function ast2html(ast, parent, root) {
+	
 	let kind = ast.ast;
 	let loc = ast.loc;
 	let locstr = `${loc.filepath}@${loc.begin.line}:${loc.begin.col}-${loc.end.line}:${loc.end.col}`;
@@ -30,6 +36,50 @@ function ast2html(ast, parent, root) {
 
 	// hide or show this?
 	//div.children().hide();
+}
+
+
+///// File Chooser
+function filePicker(cardsFileList) {
+	// first clear the select element options before populating it again
+	document.getElementById('openFileName').options.length = 2;
+
+	var sel = document.getElementById('openFileName')
+	// console.log(cardsFileList)
+
+	cardsFileList.forEach(function(element) {
+		// console.log(element)
+		var opt = document.createElement('option')
+		opt.appendChild(document.createTextNode(element))
+		opt.value = element
+		sel.appendChild(opt)
+	})
+}
+
+function openFileName (selectedIndex){
+	fileIndex = (selectedIndex - 2)
+	cpp2CodeMirror(cppSource[Object.keys(cppSource)[fileIndex]], $("#codeView"));
+
+
+}
+///// Main test.cpp Codemirror Editor Instance
+function cpp2CodeMirror(cppSource) {
+	if (cppSource == null) return
+	var target = document.getElementById('codeView')
+  target.innerHTML = '';
+  dv = CodeMirror(target, {
+    // content of the editor
+    value: cppSource,
+    // include line numbers in the left margin
+    lineNumbers: true,
+    // keep this at 10 or less. if infinite it slows the page down a LOT. this is essentially the size of the buffer beyond what is displayed, and if set to infinite or larger number, enables text searching, but again, page loading is an issue.
+    viewportMargin: 10,
+    // keep this. we're primarily concerned with being able to edit cpp code
+		mode: "clike",
+		theme: 'one-dark',
+  });
+	dv.setSize(500, 900)
+
 }
 
 /////////////////// WEBSOCKET STUFF
@@ -88,16 +138,23 @@ ws_connect({
 	},
 });
 
+var cppSource; // this must be global
+
 function handleMessage(msg) {
 	switch (msg.type) {
 		case "set_ast": {
 
 			// update whole scene based on msg.value
-			console.log(msg.value);
+			// console.log(msg.value);
 
 			let ast = msg.value;
-			$("#tree").children().remove();
-			ast2html(ast, $("#tree"), ast);
+			cppSource = msg.value.files;
+			let files = Object.keys(cppSource) // set list of files
+			filePicker(files) // update the file list in the filepicker menu
+			cpp2CodeMirror(cppSource[Object.keys(cppSource)[1]], $("#codeView")); //put the cpp code in codemirror
+			$("#tree").children().remove(); // clear the tree
+			ast2html(ast, $("#tree"), ast); // decorate the tree...
+			
 			break;
 		}
 	}
