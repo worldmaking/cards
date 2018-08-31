@@ -133,7 +133,7 @@ function send_ast(ast, session) {
 	}));
 }
 
-function cpp2json(){
+function cpp2json(filename){
 	execSync("./cpp2json test.cpp test.json", {cwd: path.join(server_path, "cpp2json")}, (stdout, stderr, err) => {
 		if (stderr || err) {
 			var newError = (stderr + err).toString()
@@ -150,7 +150,11 @@ function cpp2json(){
 		
 	})
 	console.log("successful compile")
-	execSync('git commit -am "successful compile"')
+	if (filename) {
+		execSync('git add ' + path.join(server_path, "cpp2json", filename))
+		execSync('git commit -am "successful compile"')
+	}
+	
 	ast = JSON.parse(fs.readFileSync(path.join(server_path, "/cpp2json/test.json"), 'utf8'));
 	return ast;
 	// execSync("")
@@ -170,7 +174,7 @@ function handleMessage(msg, session) {
 		case "code": {
 			console.log(msg.filename)
 			fs.writeFileSync(path.join(server_path, "cpp2json", msg.filename), msg.value, 'utf8')
-			send_ast(cpp2json(), session);
+			send_ast(cpp2json(msg.filename), session);
 		}
 
 		break
