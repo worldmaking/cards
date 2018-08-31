@@ -69,7 +69,16 @@ function cpp2CodeMirror(cppSource) {
   target.innerHTML = '';
   dv = CodeMirror(target, {
     // content of the editor
-    value: cppSource,
+		value: cppSource,
+		styleActiveLine: true,
+		readOnly: false,
+		revertButtons: true,
+		linewrapping: true,
+		undoDepth: 200,
+		cursorBlinkRate: 300,
+		cursorScrollMargin: 0, 
+
+
     // include line numbers in the left margin
     lineNumbers: true,
     // keep this at 10 or less. if infinite it slows the page down a LOT. this is essentially the size of the buffer beyond what is displayed, and if set to infinite or larger number, enables text searching, but again, page loading is an issue.
@@ -82,6 +91,50 @@ function cpp2CodeMirror(cppSource) {
 
 }
 
+// //// Codemirror Highlighting
+
+// ///////////////////////////////////////////////////
+function highlightLine() {
+// provide line highlighting for in the codemirror editor so user can easily spot parameters 
+// in the state.h file:
+// get the begin-end lines of each parameter within the state.h!
+	Object.keys(state).forEach(function(key, value) {
+		pName = state[key].paramName;
+		begin = state[key].begin - 1;
+		end = state[key].end;
+		// tell codemirror to highlight the chosen line
+		if (pName == paramName){
+			// if the parameter is different from previous change, highlight previously modified parameter as blue in the state.h
+			if (lastLine !== undefined && lastLine !== begin) {
+				dv.addLineClass(lastLine, 'background', 'cm-highlight-lastLine');
+			}
+			// if new parameter change, tell cm where to highlight
+			var t = dv.charCoords({line: begin, ch: 0}, "local").top; 
+			var middleHeight = dv.getScrollerElement().offsetHeight / 2; 
+			// focus the editor's page around the line
+			dv.scrollTo(null, t - middleHeight - 5);
+			// apply highlight to the selected parameter-line
+			dv.addLineClass(begin, 'background', 'cm-highlight');
+			// set the cm cursor to the line
+			dv.setCursor({line: begin, ch: window.lastpo});
+			// remember the current selected line for next time we change a param
+			lastLine = begin;
+		}
+	}) 
+}
+
+//// clear highlights
+$(function() {
+	$("#clearHighlights").click( function(){
+		Object.keys(lines).forEach(function(key, value) {
+			console.log(lines[key].begin)
+			dv.removeLineClass(lines[key].begin, 'background');
+
+		});
+	});
+
+})
+  
 /////////////////// WEBSOCKET STUFF
 
 var ws;

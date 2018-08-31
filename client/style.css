@@ -42,3 +42,7 @@ html {
 .functiondecl {
   background-color: #ccc;
 }
+/* codemirror highlighting */
+.cm-highlight {color: lightgreen; background-color: green}
+.cm-highlight-lastLine {color: rgb(144, 182, 238); background-color: rgb(0, 102, 128)}
+.CodeMirror-selection-highlight-scrollbar {background-color: green}
