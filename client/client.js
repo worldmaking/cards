@@ -7,17 +7,17 @@
 /////////////// EDITOR STUFF
 
 function ast2html(ast, parent, root) {
-	
+	let id = ast.id;
 	let kind = ast.ast;
 	let loc = ast.loc;
 	let locstr = `${loc.filepath}@${loc.begin.line}:${loc.begin.col}-${loc.end.line}:${loc.end.col}`;
-	let summary = kind + " " + ast.name;
+	let summary = `${id} ${kind} ${ast.name || ""}`;
 	if (kind == "FunctionTemplate" || kind == "FunctionDecl" || kind == "CXXMethod") {
 		summary += "()"
 	}
 	let filecode = root.files[loc.filepath];
 	let code = filecode.substr(loc.begin.char, loc.end.char-loc.begin.char);
-	let div = $('<div class="ast '+kind.toLowerCase()+'" />')
+	let div = $('<div id="node_'+id+'" class="ast '+kind.toLowerCase()+'" />')
 		.html(summary)
 		.on('click', function(e) {
 			// hide/show on click

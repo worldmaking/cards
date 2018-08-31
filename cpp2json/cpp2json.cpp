@@ -37,11 +37,18 @@ CXChildVisitResult visit(CXCursor c, CXCursor parent, CXClientData client_data);
 
 json jdoc = {
 	{ "files", json::object() },
+	{ "id", 0 },
+	{ "ast", "TranslationUnit" },
 	{ "nodes", json::array() }
 };
 CXTranslationUnit unit;
 CXFile cfile;
 std::string filetext;
+
+int uid() {
+	static int id=0;
+	return ++id;
+}
 
 // turn on to put loc info in the JSON tree
 bool doesJsonHaveLocations = true;
@@ -134,10 +141,6 @@ int main(int argc, const char ** argv) {
 	// CINDEX_LINKAGE CXFile clang_getIncludedFile(CXCursor cursor); 
 	// TODO: deal with includes:
 	// for f in unit.get_includes(): print '\t'*f.depth, f.include.name
-
-	// start building a JSON for the output:
-	jdoc["ast"] = clang_getCString(clang_getCursorKindSpelling(clang_getCursorKind(cursor)));
-	//printf("json started\n");
 
 	// store node's location in the JSON?
 	if (doesJsonHaveLocations) {
@@ -245,7 +248,8 @@ CXChildVisitResult visit(CXCursor c, CXCursor parent, CXClientData client_data) 
 
 	// create a node in the JSON for this AST node
 	json jnode = {
-		{ "ast", clang_getCString(kind_str) }
+		{ "ast", clang_getCString(kind_str) },
+		{ "id", uid() }
 	};
 	// store node's location in the JSON?
 	if (doesJsonHaveLocations) {
