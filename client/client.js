@@ -12,12 +12,21 @@ $( function() {
 
 } );
 
+<<<<<<< HEAD
 function ast2html(kind, parent, root) {
 	let id = kind.id;
 	let kind = kind.kind;
 	let loc = kind.loc;
 	let locstr = `${loc.filepath}@${loc.begin.line}:${loc.begin.col}-${loc.end.line}:${loc.end.col}`;
 	let summary = `${id} ${kind} ${kind.name || ""}`;
+=======
+function ast2html(ast, parent, root) {
+	let id = ast.id;
+	let kind = ast.kind;
+	let loc = ast.loc;
+	let locstr = `${loc.filepath}@${loc.begin.line}:${loc.begin.col}-${loc.end.line}:${loc.end.col}`;
+	let summary = `${kind} ${ast.name || ""}`;
+>>>>>>> 38f6888897f9a74bd0389435e2a614c51ba41d84
 	if (kind == "FunctionTemplate" || kind == "FunctionDecl" || kind == "CXXMethod") {
 		summary += "()"
 	}

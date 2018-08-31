@@ -38,7 +38,7 @@ CXChildVisitResult visit(CXCursor c, CXCursor parent, CXClientData client_data);
 json jdoc = {
 	{ "files", json::object() },
 	{ "id", 0 },
-	{ "ast", "TranslationUnit" },
+	{ "kind", "TranslationUnit" },
 	{ "nodes", json::array() }
 };
 CXTranslationUnit unit;
@@ -248,7 +248,7 @@ CXChildVisitResult visit(CXCursor c, CXCursor parent, CXClientData client_data) 
 
 	// create a node in the JSON for this AST node
 	json jnode = {
-		{ "ast", clang_getCString(kind_str) },
+		{ "kind", clang_getCString(kind_str) },
 		{ "id", uid() }
 	};
 	// store node's location in the JSON?
