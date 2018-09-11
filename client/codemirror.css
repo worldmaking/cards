@@ -102,6 +102,7 @@
 }
 .CodeMirror-ruler {
   border-left: 1px solid #ccc;
+  
   top: 0; bottom: 0;
   position: absolute;
 }
