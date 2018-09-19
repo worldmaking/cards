@@ -166,7 +166,7 @@ function git(session, filename){
 	execSync('git add ' + path.join(project_path, filename))
 	execSync('git commit -am "successful compile"')
 	execSync('git rev-parse HEAD', (stdout) => {
-		console.log(stdout)
+		console.log("\n\n\n hash is " + stdout)
 		// if commit successful, pass the commit hash to the git function
 		session.socket.send(JSON.stringify({
 			filename: filename,
