@@ -6,7 +6,7 @@ T foo(T x, T y) {
 	return x * y;
 }
 
-int bar();
+int bar(); 
 
 struct Jim {
 

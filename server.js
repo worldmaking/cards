@@ -138,7 +138,7 @@ function cpp2json(filename){
 		// THIS ISN"T WORKING:
 		if (stderr || err) {
 			var newError = (stderr + err).toString()
-			session.socket.send(JSON.stringify({
+			socket.send(JSON.stringify({
 				session: session.id,
 				date: Date.now(),
 				type: "compile_error",
