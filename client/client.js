@@ -413,7 +413,7 @@ var cppSource; // this must be global
 
 function handleMessage(msg) {
 	switch (msg.type) {
-		case "set_ast": {
+		case "set_ast": 
 			// update whole scene based on msg.value
 			// console.log(msg.value);
 			let ast = msg.value;
@@ -426,7 +426,8 @@ function handleMessage(msg) {
 			ast2html(ast, $("#tree"), ast); // decorate the tree...
 			
 			break;
-		}
+		case "git":
+		console.log(msg.value)
 	}
 }
 

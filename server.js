@@ -154,6 +154,12 @@ function cpp2json(filename, session){
 		// add and commit it to the repo
 		execSync('git add ' + path.join(project_path, filename))
 		execSync('git commit -am "successful compile"')
+		session.socket.send(JSON.stringify({
+			session: session.id,
+			date: Date.now(),
+			type: "git",
+			value: "changes_committed"
+		}))
 		
 	}
 	// read the result of cpp2json 
@@ -174,7 +180,7 @@ function handleMessage(msg, session) {
 
 		case "code": {
 			fs.writeFileSync(path.join(server_path, "cpp2json", msg.filename), msg.value, 'utf8')
-			console.log(msg.filename, session)
+			//console.log(msg.filename, session)
 			send_ast(cpp2json(msg.filename, session), session);
 		}
 
