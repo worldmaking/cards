@@ -167,10 +167,10 @@ function cpp2json(filename, session){
 	return ast;
 }
 
-function git(hash){
+function git(hash, session){
 	session.socket.send(JSON.stringify({
 		//filename: filename,
-		session: session.id,
+	  session: session.id,
 		date: Date.now(),
 		type: "git",
 		value: "changes_committed",
@@ -190,7 +190,7 @@ function handleMessage(msg, session) {
 		case "code": {
 			fs.writeFileSync(path.join(server_path, "cpp2json", msg.filename), msg.value, 'utf8')
 			//console.log(msg.filename, session)
-			git(cpp2json(msg.filename, session));
+			git(cpp2json(msg.filename, session), session);
 		}
 
 		break
