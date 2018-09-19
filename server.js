@@ -148,7 +148,7 @@ function cpp2json(filename, session){
 			return;
 		} 		
 	})
-	console.log("successful compile")
+	console.log("successful compile " + filename)
 	// if the file has been modified by the client:
 	if (filename) {
 		// add and commit it to the repo
