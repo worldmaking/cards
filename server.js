@@ -174,8 +174,8 @@ function git(hash, session){
 	  session: session.id,
 		date: Date.now(),
 		type: "git",
-		value: "changes_committed",
-		data: hash
+		value: hash,
+		//data: hash
 	}))
 }
 
