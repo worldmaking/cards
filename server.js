@@ -13,7 +13,7 @@ const ip = require('ip')
 
 
 //process.chdir(process.argv[2] || ".");
-const project_path = process.cwd();
+const project_path = path.join(__dirname, "cpp2json");
 const server_path = __dirname;
 const client_path = path.join(server_path, "client");
 console.log("project_path", project_path);
@@ -131,7 +131,8 @@ function send_ast(ast, session) {
 	}));
 }
 
-function cpp2json(filename){
+function cpp2json(filename, session){
+	console.log("cpp2json " + session)
 	execSync("./cpp2json test.cpp test.json", {cwd: path.join(server_path, "cpp2json")}, (stdout, stderr, err) => {
 		
 		// TODO if the code failed to compile, send the error message to the client and prevent committing a broken file
@@ -151,8 +152,9 @@ function cpp2json(filename){
 	// if the file has been modified by the client:
 	if (filename) {
 		// add and commit it to the repo
-		execSync('git add ' + path.join(server_path, "cpp2json", filename))
+		execSync('git add ' + path.join(project_path, filename))
 		execSync('git commit -am "successful compile"')
+		
 	}
 	// read the result of cpp2json 
 	ast = JSON.parse(fs.readFileSync(path.join(server_path, "/cpp2json/test.json"), 'utf8'));
@@ -172,8 +174,8 @@ function handleMessage(msg, session) {
 
 		case "code": {
 			fs.writeFileSync(path.join(server_path, "cpp2json", msg.filename), msg.value, 'utf8')
-			console.log(msg.filename)
-			send_ast(cpp2json(msg.filename), session);
+			console.log(msg.filename, session)
+			send_ast(cpp2json(msg.filename, session), session);
 		}
 
 		break
