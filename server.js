@@ -157,23 +157,28 @@ function cpp2json(filename, session){
 }
 
 function git(session, filename){
-
+	console.log(session, filename, path.join(project_path, filename))
 		// add and commit it to the repo
 	execSync('git add ' + path.join(project_path, filename))
-	execSync('git commit -m "successful compile"')
-	execSync('git rev-parse HEAD', (stdout) => {
-		console.log("\n\n\n hash is " + stdout)
-		// if commit successful, pass the commit hash to the git function
-		session.socket.send(JSON.stringify({
-			filename: filename,
-			session: session.id,
-			date: Date.now(),
-			type: "git",
-			value: hash,
-			//data: hash
-		}))
+	// execSync('git commit -m "successful compile"', (stdout) => {
+	// 	console.log(stdout)
+	// })
+	// execSync('git rev-parse HEAD', (stdout, stderr, err) => {
+	// 	console.log("\n\n\n stdout is " + stdout)
+	// 	console.log("\n\n\n stderr is " + stderr)
+	// 	console.log("\n\n\n err is " + err)
+	// 	hash = stderr;
+	// 	// if commit successful, pass the commit hash to the git function
+	// 	session.socket.send(JSON.stringify({
+	// 		filename: filename,
+	// 		session: session.id,
+	// 		date: Date.now(),
+	// 		type: "git",
+	// 		hash: hash,
+	// 		//data: hash
+	// 	}))
 
-	})
+	// })
 
 
 
@@ -191,12 +196,18 @@ function handleMessage(msg, session) {
 		case "code": {
 			fs.writeFileSync(path.join(server_path, "cpp2json", msg.filename), msg.value, 'utf8')
 			//console.log(msg.filename, session)
-			console.log(msg.value)
+			//console.log(msg.value)
 				//check that changes made to file compile correctly
-			exec("./cpp2json test.cpp test.json", {cwd: path.join(server_path, "cpp2json")}, (stdout, stderr, err) => {
+			execSync("./cpp2json test.cpp test.json", {cwd: path.join(server_path, "cpp2json")}, (stdout, stderr, err) => {
 				// NEED SOMETHING THAT RECEIVES COMPILE RESULT FROM CPP2JSON
 				//if compile === true:
 			})
+
+			// exec('git rev-parse HEAD', (stdout, stderr, err) => {
+			// 	console.log("\n\n\n stdout is " + stdout)
+			// 	console.log("\n\n\n stderr is " + stderr)
+			// 	console.log("\n\n\n err is " + err)
+			// })
 			git(session, msg.filename);
 		}
 
