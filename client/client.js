@@ -191,6 +191,7 @@ function ast2html(ast, parent, root) {
 var filename;
 ///// File Chooser
 function filePicker(cardsFileList) {
+	localStorage.filename = filename
 	// first clear the select element options before populating it again
 	document.getElementById('openFileName').options.length = 2;
 
@@ -201,6 +202,7 @@ function filePicker(cardsFileList) {
 		// console.log(element)
 		// set the filename for the editor to communicate with server...
 		filename = element;
+		
 		var opt = document.createElement('option')
 		opt.appendChild(document.createTextNode(element))
 		opt.value = element

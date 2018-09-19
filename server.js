@@ -148,7 +148,7 @@ function cpp2json(filename, session){
 			return;
 		} 		
 	})
-	console.log("successful compile " + filename)
+	 console.log("successful compile " + filename)
 	// if the file has been modified by the client:
 	if (filename) {
 		// add and commit it to the repo
@@ -156,6 +156,7 @@ function cpp2json(filename, session){
 		execSync('git commit -am "successful compile"')
 		execSync('git rev-parse HEAD', (stdout) => {
 			session.socket.send(JSON.stringify({
+				filename: session.filename,
 				session: session.id,
 				date: Date.now(),
 				type: "git",
