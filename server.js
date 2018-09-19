@@ -165,8 +165,8 @@ function cpp2json(filename, session){
 			}))
 
 		})
-
-		
+	// if compile successful, don't continue on to send_ast
+	return;	
 	}
 	// read the result of cpp2json 
 	ast = JSON.parse(fs.readFileSync(path.join(server_path, "/cpp2json/test.json"), 'utf8'));
@@ -187,7 +187,7 @@ function handleMessage(msg, session) {
 		case "code": {
 			fs.writeFileSync(path.join(server_path, "cpp2json", msg.filename), msg.value, 'utf8')
 			//console.log(msg.filename, session)
-			send_ast(cpp2json(msg.filename, session), session);
+			cpp2json(msg.filename, session);
 		}
 
 		break
