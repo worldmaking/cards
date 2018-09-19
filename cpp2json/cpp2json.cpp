@@ -51,9 +51,9 @@ int uid() {
 }
 
 // turn on to put loc info in the JSON tree
-bool doesJsonHaveLocations = true;
-bool doesJsonHaveComments = true;
-bool doesJsonHaveSources = true;
+bool doesJsonHaveLocations = 0;//true;
+bool doesJsonHaveComments = 0;//true;
+bool doesJsonHaveSources = 0;//true;
 
 int main(int argc, const char ** argv) {
 
@@ -253,6 +253,7 @@ CXChildVisitResult visit(CXCursor c, CXCursor parent, CXClientData client_data) 
 	};
 	// store node's location in the JSON?
 	if (doesJsonHaveLocations) {
+		//jnode["range"] = { offset, offset1 };
 		jnode["loc"] = { 
 			{"filepath", clang_getCString(filepath) },
 			{"begin", { {"line", line}, {"col", column}, {"char", offset} } }, 
@@ -286,9 +287,18 @@ CXChildVisitResult visit(CXCursor c, CXCursor parent, CXClientData client_data) 
 	if (clang_isExpression(kind)) jnode["isExpr"] = true;
 	if (clang_isStatement(kind)) jnode["isStat"] = true;
 
+	bool isFunc = false;
+	if (kind == CXCursor_FunctionDecl 
+		|| kind == CXCursor_CXXMethod 
+		|| kind == CXCursor_FunctionTemplate) {
+		isFunc = true;
+		jnode["isFunc"] = true;
+	}
+	
 	switch(kind) {
 	case CXCursor_FunctionDecl:
-	case CXCursor_CXXMethod: {
+	case CXCursor_CXXMethod:
+	case CXCursor_FunctionTemplate: {
 		// for a functiondecl 
 		// clang_getFunctionTypeCallingConv
 		// clang_isFunctionTypeVariadic
@@ -324,32 +334,37 @@ CXChildVisitResult visit(CXCursor c, CXCursor parent, CXClientData client_data) 
 
 		CXEvalResult res = clang_Cursor_Evaluate(c);
 		CXEvalResultKind ekind = clang_EvalResult_getKind(res);
-		//printf("literal ekind %d %d\n", ekind, CXEval_Int);
-		switch (ekind) {
-			case CXEval_Int:
-				if (clang_Type_getSizeOf(ctype) > sizeof(int)) {
-					unsigned u = clang_EvalResult_isUnsignedInt(res);
-					jnode["value"] = u ? u : clang_EvalResult_getAsLongLong(res);
-				} else {
-					unsigned long long u = clang_EvalResult_getAsUnsigned(res);
-					jnode["value"] = u ? u : clang_EvalResult_getAsLongLong(res);
-				}
-				break;				
-			case CXEval_Float:
-				jnode["value"] = clang_EvalResult_getAsDouble(res);
-				break;
-			case CXEval_ObjCStrLiteral:
-			case CXEval_StrLiteral:
-			case CXEval_CFStr: 
-			case CXEval_Other:
-			{
-				const char * val = clang_EvalResult_getAsStr(res);
-				if (val) jnode["value"] = clang_EvalResult_getAsStr(res);
-			} break;
-			default: {
-				// just copy the source?
+		printf("literal ekind %d %p\n", ekind, res);
+		if (!res) {
+			// just copy raw source:
+			jnode["expr"] = filetext.substr(offset, offset1-offset);
+		} else {
+			switch (ekind) {
+				case CXEval_Int:
+					if (clang_Type_getSizeOf(ctype) > sizeof(int)) {
+						unsigned u = clang_EvalResult_isUnsignedInt(res);
+						jnode["expr"] = u ? u : clang_EvalResult_getAsLongLong(res);
+					} else {
+						unsigned long long u = clang_EvalResult_getAsUnsigned(res);
+						jnode["expr"] = u ? u : clang_EvalResult_getAsLongLong(res);
+					}
+					break;				
+				case CXEval_Float:
+					jnode["expr"] = clang_EvalResult_getAsDouble(res);
+					break;
+				case CXEval_ObjCStrLiteral:
+				case CXEval_StrLiteral:
+				case CXEval_CFStr: 
+				case CXEval_Other:
+				{
+					const char * val = clang_EvalResult_getAsStr(res);
+					if (val) jnode["expr"] = clang_EvalResult_getAsStr(res);
+				} break;
+				default: {
+					// just copy the source?
 
-			} break;
+				} break;
+			}
 		}
 		clang_EvalResult_dispose(res);
 	} break;
@@ -373,8 +388,31 @@ CXChildVisitResult visit(CXCursor c, CXCursor parent, CXClientData client_data) 
 			Thoughts: 
 			- it would be nice to avoid the singular CompoundStmt that all function bodies have, and just say function.body = [], but I can't fingure out how to avoid it. CompoundStmt can appear in other blocks of code and shouldn't be skipped, as it provides scope. I guess if we know the current cursor is a function, we can analyze the types of the children in a more nuanced way rather than assigning to [nodes]?
 		*/
+
 		if (jkids.size()) {
-			jnode["nodes"] = jkids;
+			if (isFunc) {
+				// if last node is CompoundStmt, store it as "body":
+				json last = jkids.back();
+				//std::string lastkind = last["kind"];
+				if (last["kind"] == "CompoundStmt") {
+					jnode["body"] = last["nodes"];
+					jkids.erase(jkids.size()-1);
+				}
+				// rest of nodes are assumed to be 'params':
+				jnode["params"] = jkids;
+
+			} else {
+
+				// I want to mark all children of CompoundStmt as statements, 
+				// even if some of them are expressions 
+				// (e.g. foo(); should be a statement)
+				if (kind == CXCursor_CompoundStmt) {
+					for (json::iterator it = jkids.begin(); it != jkids.end(); ++it) {
+						(*it)["isStmt"] = true;
+					}
+				}
+				jnode["nodes"] = jkids;
+			}
 		}
 	}
 
