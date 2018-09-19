@@ -157,11 +157,7 @@ function cpp2json(filename, session){
 }
 
 function git(session, filename){
-	//check that changes made to file compile correctly
-	execSync("./cpp2json test.cpp test.json", {cwd: path.join(server_path, "cpp2json")}, (stdout, stderr, err) => {
-		// NEED SOMETHING THAT RECEIVES COMPILE RESULT FROM CPP2JSON
-		//if compile === true:
-	})
+
 		// add and commit it to the repo
 	execSync('git add ' + path.join(project_path, filename))
 	execSync('git commit -am "successful compile"')
@@ -196,6 +192,11 @@ function handleMessage(msg, session) {
 			fs.writeFileSync(path.join(server_path, "cpp2json", msg.filename), msg.value, 'utf8')
 			//console.log(msg.filename, session)
 			console.log(msg.value)
+				//check that changes made to file compile correctly
+			exec("./cpp2json test.cpp test.json", {cwd: path.join(server_path, "cpp2json")}, (stdout, stderr, err) => {
+				// NEED SOMETHING THAT RECEIVES COMPILE RESULT FROM CPP2JSON
+				//if compile === true:
+			})
 			git(session, msg.filename);
 		}
 
