@@ -155,25 +155,28 @@ function cpp2json(filename, session){
 		execSync('git add ' + path.join(project_path, filename))
 		execSync('git commit -am "successful compile"')
 		execSync('git rev-parse HEAD', (stdout) => {
-			session.socket.send(JSON.stringify({
-				filename: filename,
-				session: session.id,
-				date: Date.now(),
-				type: "git",
-				value: "changes_committed",
-				data: stdout
-			}))
+
+			// if commit successful, pass the commit hash to the git function
+			return stdout;	
 
 		})
-	// if compile successful, don't continue on to send_ast
-	return;	
+
 	}
 	// read the result of cpp2json 
 	ast = JSON.parse(fs.readFileSync(path.join(server_path, "/cpp2json/test.json"), 'utf8'));
 	return ast;
 }
 
-
+function git(hash){
+	session.socket.send(JSON.stringify({
+		//filename: filename,
+		session: session.id,
+		date: Date.now(),
+		type: "git",
+		value: "changes_committed",
+		data: hash
+	}))
+}
 
 function handleMessage(msg, session) {
 	
@@ -187,7 +190,7 @@ function handleMessage(msg, session) {
 		case "code": {
 			fs.writeFileSync(path.join(server_path, "cpp2json", msg.filename), msg.value, 'utf8')
 			//console.log(msg.filename, session)
-			cpp2json(msg.filename, session);
+			git(cpp2json(msg.filename, session));
 		}
 
 		break
