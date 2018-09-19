@@ -1,0 +1,6 @@
+
+Do a commit at every successful clang compile.  ask Graham for a message from cpp2json that states whether the compile was successful or not (then use this to switch between running a commit (successful) or not running a commit and telling the user (unsuccessful)
+
+DONE Text highlighting of the full document in codemirror based on which node in the AST is selected\
+
+make the font the same for ALL editor views!
