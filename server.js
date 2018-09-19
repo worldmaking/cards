@@ -154,12 +154,16 @@ function cpp2json(filename, session){
 		// add and commit it to the repo
 		execSync('git add ' + path.join(project_path, filename))
 		execSync('git commit -am "successful compile"')
-		session.socket.send(JSON.stringify({
-			session: session.id,
-			date: Date.now(),
-			type: "git",
-			value: "changes_committed"
-		}))
+		execSync('git rev-parse HEAD', (stdout) => {
+			session.socket.send(JSON.stringify({
+				session: session.id,
+				date: Date.now(),
+				type: "git",
+				value: "changes_committed", stdout
+			}))
+
+		})
+
 		
 	}
 	// read the result of cpp2json 
