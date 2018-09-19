@@ -155,9 +155,10 @@ function cpp2json(filename, session){
 		execSync('git add ' + path.join(project_path, filename))
 		execSync('git commit -am "successful compile"')
 		execSync('git rev-parse HEAD', (stdout) => {
-
+			console.log(stdout)
 			// if commit successful, pass the commit hash to the git function
-			return stdout;	
+			return stdout;
+
 
 		})
 
