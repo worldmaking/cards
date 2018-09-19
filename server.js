@@ -159,7 +159,8 @@ function cpp2json(filename, session){
 				session: session.id,
 				date: Date.now(),
 				type: "git",
-				value: "changes_committed", stdout
+				value: "changes_committed",
+				data: stdout
 			}))
 
 		})
