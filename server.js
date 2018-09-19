@@ -172,6 +172,7 @@ function handleMessage(msg, session) {
 
 		case "code": {
 			fs.writeFileSync(path.join(server_path, "cpp2json", msg.filename), msg.value, 'utf8')
+			console.log(msg.filename)
 			send_ast(cpp2json(msg.filename), session);
 		}
 
