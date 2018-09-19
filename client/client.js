@@ -275,7 +275,7 @@ function saveCode () {
   var changes = dv.getValue()
   // log('Sent LeftEditor Contents to server: ' + commitMsg)
 	// log('sending: ' + message);
-
+console.log(filename)
 	ws.send(JSON.stringify({
 		//session: session.id,
 		filename: filename,
