@@ -156,7 +156,7 @@ function cpp2json(filename, session){
 		execSync('git commit -am "successful compile"')
 		execSync('git rev-parse HEAD', (stdout) => {
 			session.socket.send(JSON.stringify({
-				filename: session.filename,
+				filename: filename,
 				session: session.id,
 				date: Date.now(),
 				type: "git",
