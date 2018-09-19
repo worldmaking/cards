@@ -137,46 +137,50 @@ function cpp2json(filename, session){
 		
 		// TODO if the code failed to compile, send the error message to the client and prevent committing a broken file
 		// THIS ISN"T WORKING:
-		if (stderr || err) {
-			var newError = (stderr + err).toString()
-			session.socket.send(JSON.stringify({
-				session: session.id,
-				date: Date.now(),
-				type: "compile_error",
-				value: newError
-			}))
-			return;
-		} 		
-	})
-	 console.log("successful compile " + filename)
+	// 	if (stderr || err) {
+	// 		var newError = (stderr + err).toString()
+	// 		session.socket.send(JSON.stringify({
+	// 			session: session.id,
+	// 			date: Date.now(),
+	// 			type: "compile_error",
+	// 			value: newError
+	// 		}))
+	// 		return;
+	// 	} 		
+	// })
+	 	console.log("successful compile " + filename)
 	// if the file has been modified by the client:
-	if (filename) {
-		// add and commit it to the repo
-		execSync('git add ' + path.join(project_path, filename))
-		execSync('git commit -am "successful compile"')
-		execSync('git rev-parse HEAD', (stdout) => {
-			console.log(stdout)
-			// if commit successful, pass the commit hash to the git function
-			return stdout;
-
-
-		})
-
-	}
+	})
 	// read the result of cpp2json 
 	ast = JSON.parse(fs.readFileSync(path.join(server_path, "/cpp2json/test.json"), 'utf8'));
 	return ast;
 }
 
-function git(hash, session){
-	session.socket.send(JSON.stringify({
-		//filename: filename,
-	  session: session.id,
-		date: Date.now(),
-		type: "git",
-		value: hash,
-		//data: hash
-	}))
+function git(session, filename){
+	//check that changes made to file compile correctly
+	execSync("./cpp2json test.cpp test.json", {cwd: path.join(server_path, "cpp2json")}, (stdout, stderr, err) => {
+		// NEED SOMETHING THAT RECEIVES COMPILE RESULT FROM CPP2JSON
+		//if compile === true:
+	})
+		// add and commit it to the repo
+	execSync('git add ' + path.join(project_path, filename))
+	execSync('git commit -am "successful compile"')
+	execSync('git rev-parse HEAD', (stdout) => {
+		console.log(stdout)
+		// if commit successful, pass the commit hash to the git function
+		session.socket.send(JSON.stringify({
+			filename: filename,
+			session: session.id,
+			date: Date.now(),
+			type: "git",
+			value: hash,
+			//data: hash
+		}))
+
+	})
+
+
+
 }
 
 function handleMessage(msg, session) {
@@ -191,7 +195,8 @@ function handleMessage(msg, session) {
 		case "code": {
 			fs.writeFileSync(path.join(server_path, "cpp2json", msg.filename), msg.value, 'utf8')
 			//console.log(msg.filename, session)
-			git(cpp2json(msg.filename, session), session);
+			console.log(msg.value)
+			git(session, msg.filename);
 		}
 
 		break
