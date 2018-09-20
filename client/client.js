@@ -7,15 +7,18 @@ console.log("localStorage",localStorage)
 
 switch (localStorage.length) {
 	case 0:
-	$("#treeHandle").css({ float: "left", top: 3, left: 20, width: 300})
-	$("#codeViewHandle").css({ float: "left", top: 3, left: 50, width: 400 })
-	$("#terminalHandle").css({ float: "left", top: 30, left: 100, width: 400 })
+	$("#treeHandle").css({ float: "left", top: 20, left: 10, width: 300})
+	$("#codeViewHandle").css({ float: "left", top: 20, left: 15, width: 400 })
+	$("#terminalHandle").css({ float: "left", top: 20, left: 20, width: 400 })
+	$("#sessionHistoryHandle").css({ float: "left", top: 20, left: 25, width: 400 })
+
 	break;
 }
 
 $("#treeHandle").css({ width: $("#treeHandle").width()})
 $("#codeViewHandle").css({ width: $("#codeViewHandle").width() })
 $("#terminalHandle").css({ width: $("#terminalHandle").width() })
+$("#sessionHistoryHandle").css({ width: $("#sessionHistoryHandle").width() })
 
 console.log($( "#terminalHandle").height(), $("#terminalHandle").width(), $( "#treeHandle").height(), $("#treeHandle").width(), $( "#codeViewHandle").height(), $("#codeViewHandle").width())
 console.log($( "#terminal").height(), $("#terminal").width(), $( "#tree").height(), $("#tree").width(), $( "#codeView").height(), $("#codeView").width())
@@ -60,6 +63,11 @@ function initState (){
 				// height = size.height - 44
 				// width = size.width - 5
 				// $("#codeView").css({width, height})
+			} break;
+			case "sessionHistoryHandle": {
+				$("#" + id).css(pos)
+				// $("#" + id).css(size)
+
 			} break;
 
 			default:
@@ -128,6 +136,20 @@ $( function() {
 	});
 });
 
+$( "#sessionHistoryHandle" ).draggable({ handle: "p", scroll: true, scrollSensitivity: 100, stop: function (event, ui) {
+	positions[this.id] = ui.position
+	localStorage.positions = JSON.stringify(positions)
+	}
+})
+.resizable({
+	alsoResize: "#sessionHistory", 
+	stop: function (event, ui) {
+		sizes[this.id] = ui.size
+		localStorage.sizes = JSON.stringify(sizes)
+		console.log(localStorage.sizes)
+		
+	}
+});
 
 // $("#draggable3").draggable({
 //     containment: "#containment-wrapper",
@@ -191,7 +213,7 @@ function ast2html(ast, parent, root) {
 var filename;
 ///// File Chooser
 function filePicker(cardsFileList) {
-	localStorage.filename = filename
+	
 	// first clear the select element options before populating it again
 	document.getElementById('openFileName').options.length = 2;
 
@@ -429,7 +451,50 @@ function handleMessage(msg) {
 			
 			break;
 		case "git":
-		console.log(msg.value)
+		console.log(msg.hash)
+		hash = msg.hash.split(" ")[0]
+		time = new Date(msg.date).toUTCString()
+
+		console.log(time)
+		
+		commitMsg = msg.hash.replace(/^\S+/g, '')
+		entry = time + " " + commitMsg
+		//var branchesList = arg.split('\n')
+		// console.log(branchesList)
+		// usebranchList = JSON.parse(arg);
+		var sel = document.getElementById('sessionHistorySelect')
+		// var length = select;
+
+		// for (i = 3; i < sel.length; i++) {
+		//     sel.options[i] = null;
+		//     }
+
+		
+			var opt = document.createElement('option')
+			opt.appendChild(document.createTextNode(entry))
+			opt.value = hash
+			sel.appendChild(opt)
+
+/*
+		Object.values(branchesList).forEach(function (value, key) {
+			var opt = document.createElement('option')
+			opt.appendChild( document.createTextNode(value))
+			opt.value = value
+			sel.appendChild(opt)
+			// find out the current branch, and highlight it in the select.
+			if (value.includes('*')) {
+				sel.selectedIndex = key
+			}
+		})
+		*/
+
 	}
 }
 
+function selectHash(){
+	e = document.getElementById('sessionHistorySelect')
+  var selectedBranch = e.options[e.selectedIndex].value
+  // console.log(selectedBranch)
+	//ws.send('selectedBranch?' + selectedBranch)
+	console.log(selectedBranch)
+}
