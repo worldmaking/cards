@@ -8,6 +8,9 @@ cpp2json/cpp2json
 cpp2json/test.json
 *.DS_Store
 
+*/temp.json
+*/temp.cpp
+
 # Runtime data
 pids
 *.pid

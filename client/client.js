@@ -11,7 +11,7 @@ switch (localStorage.length) {
 	$("#codeViewHandle").css({ float: "left", top: 20, left: 15, width: 400 })
 	$("#terminalHandle").css({ float: "left", top: 20, left: 20, width: 400 })
 	$("#sessionHistoryHandle").css({ float: "left", top: 20, left: 25, width: 400 })
-
+	$("#projectHistoryHandle").css({ float: "left", top: 20, left: 25, width: 400 })
 	break;
 }
 
@@ -19,6 +19,7 @@ $("#treeHandle").css({ width: $("#treeHandle").width()})
 $("#codeViewHandle").css({ width: $("#codeViewHandle").width() })
 $("#terminalHandle").css({ width: $("#terminalHandle").width() })
 $("#sessionHistoryHandle").css({ width: $("#sessionHistoryHandle").width() })
+$("#sprojectHistoryHandle").css({ width: $("#projectHistoryHandle").width() })
 
 console.log($( "#terminalHandle").height(), $("#terminalHandle").width(), $( "#treeHandle").height(), $("#treeHandle").width(), $( "#codeViewHandle").height(), $("#codeViewHandle").width())
 console.log($( "#terminal").height(), $("#terminal").width(), $( "#tree").height(), $("#tree").width(), $( "#codeView").height(), $("#codeView").width())
@@ -65,6 +66,11 @@ function initState (){
 				// $("#codeView").css({width, height})
 			} break;
 			case "sessionHistoryHandle": {
+				$("#" + id).css(pos)
+				// $("#" + id).css(size)
+
+			} break;
+			case "projectHistoryHandle": {
 				$("#" + id).css(pos)
 				// $("#" + id).css(size)
 
@@ -143,6 +149,21 @@ $( "#sessionHistoryHandle" ).draggable({ handle: "p", scroll: true, scrollSensit
 })
 .resizable({
 	alsoResize: "#sessionHistory", 
+	stop: function (event, ui) {
+		sizes[this.id] = ui.size
+		localStorage.sizes = JSON.stringify(sizes)
+		console.log(localStorage.sizes)
+		
+	}
+});
+
+$( "#projectHistoryHandle" ).draggable({ handle: "p", scroll: true, scrollSensitivity: 100, stop: function (event, ui) {
+	positions[this.id] = ui.position
+	localStorage.positions = JSON.stringify(positions)
+	}
+})
+.resizable({
+	alsoResize: "#projectHistory", 
 	stop: function (event, ui) {
 		sizes[this.id] = ui.size
 		localStorage.sizes = JSON.stringify(sizes)
@@ -491,10 +512,16 @@ function handleMessage(msg) {
 	}
 }
 
-function selectHash(){
-	e = document.getElementById('sessionHistorySelect')
-  var selectedBranch = e.options[e.selectedIndex].value
+function selectHash(select){
+	e = document.getElementById(select)
+  var hash = e.options[e.selectedIndex].value
   // console.log(selectedBranch)
 	//ws.send('selectedBranch?' + selectedBranch)
-	console.log(selectedBranch)
+	console.log(hash)
+	ws.send(JSON.stringify({
+		type: "show",
+		date: Date.now(),
+		hash: hash,
+		filename: filename
+	}));
 }

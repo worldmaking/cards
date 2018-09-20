@@ -213,6 +213,23 @@ function handleMessage(msg, session) {
 		}
 
 		break
+
+		case "show":
+			// get the actual code from our file, based on selected hash
+			exec('git show ' + msg.hash + ":./" + msg.filename, {cwd: project_path}, (stdout, err, stderr) => {
+				//console.log(stdout, err, stderr)
+				console.log(err)
+				//write the code to a temp file
+				fs.writeFileSync(path.join(server_path, "cpp2json", "temp.cpp"), err, 'utf8')
+			})
+			// get the ast graph!
+			execSync("./cpp2json temp.cpp temp.json", {cwd: path.join(server_path, "cpp2json")})
+			// read the ast graph
+			ast = JSON.parse(fs.readFileSync(path.join(server_path, "/cpp2json/temp.json"), 'utf8'));
+			// send it to client
+			send_ast(ast, session);
+			
+		break
 		
 	}
 }

@@ -49,15 +49,19 @@
 						<iframe height=590px width=100% id="terminal" src="http://localhost:8088/terminal" height="90%" float></iframe>	
 					</div>
 
-					<div id="sessionHistoryHandle" >
-				
-						<p class="ui-widget-header">Session History</p>
+					<div id="sessionHistoryHandle" >				
+						<p class="ui-widget-header">Session History - Updates at each successful commit</p>
 						<div id="sessionHistory">
-							<select style="width:100%; height:100%" name="sessionHistory" size="5" id="sessionHistorySelect" onchange="selectHash();"> 
+							<select style="width:100%; height:100%" name="sessionHistory" size="5" id="sessionHistorySelect" onchange="selectHash('sessionHistorySelect');"> 
 							</select> 
-						</div>
-						
-		
+						</div>	
+					</div>
+					<div id="projectHistoryHandle" >				
+						<p class="ui-widget-header">Project History (to do: get full repo history at load?)</p>
+						<div id="projectHistory">
+							<select style="width:100%; height:100%" name="projectHistory" size="5" id="projectHistorySelect" onchange="selectHash('projectHistorySelect');"> 
+							</select> 
+						</div>	
 					</div>
 	<!-- <div class="fullpage">
 		<table>
