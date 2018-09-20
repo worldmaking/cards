@@ -159,26 +159,27 @@ function cpp2json(filename, session){
 function git(session, filename){
 	console.log(session, filename, path.join(project_path, filename))
 		// add and commit it to the repo
-	execSync('git add ' + path.join(project_path, filename))
-	// execSync('git commit -m "successful compile"', (stdout) => {
-	// 	console.log(stdout)
-	// })
-	// execSync('git rev-parse HEAD', (stdout, stderr, err) => {
-	// 	console.log("\n\n\n stdout is " + stdout)
-	// 	console.log("\n\n\n stderr is " + stderr)
-	// 	console.log("\n\n\n err is " + err)
-	// 	hash = stderr;
-	// 	// if commit successful, pass the commit hash to the git function
-	// 	session.socket.send(JSON.stringify({
-	// 		filename: filename,
-	// 		session: session.id,
-	// 		date: Date.now(),
-	// 		type: "git",
-	// 		hash: hash,
-	// 		//data: hash
-	// 	}))
+  exec('git add ' + path.join(project_path, filename))
+	exec('git commit -m "successful compile"', (stdout, stderr, err) => {
+		console.log(stdout, stderr, err)
+	})
+	// eventually could run this instead : "git log -1" > it returns the HEAD commit, plus author name and branch
+	exec('git log --pretty=oneline -1', (stdout, stderr, err) => {
+		// console.log("\n\n\n stdout is " + stdout)
+		console.log("\n\n\n stderr is " + stderr)
+		// console.log("\n\n\n err is " + err)
+		hash = stderr;
+		// if commit successful, pass the commit hash to the git function
+		session.socket.send(JSON.stringify({
+			filename: filename,
+			session: session.id,
+			date: Date.now(),
+			type: "git",
+			hash: hash,
+			//data: hash
+		}))
 
-	// })
+	})
 
 
 
