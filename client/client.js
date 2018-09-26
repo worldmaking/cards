@@ -483,6 +483,10 @@ function handleMessage(msg) {
 		//var branchesList = arg.split('\n')
 		// console.log(branchesList)
 		// usebranchList = JSON.parse(arg);
+
+
+
+
 		var sel = document.getElementById('sessionHistorySelect')
 		// var length = select;
 
