@@ -10,6 +10,8 @@ const os = require("os");
 const { exec, execSync, spawn, spawnSync, fork } = require('child_process')
 const terminal = require("web-terminal");
 const ip = require('ip')
+const vorpal = require('vorpal')();
+
 
 
 //process.chdir(process.argv[2] || ".");
@@ -19,6 +21,21 @@ const client_path = path.join(server_path, "client");
 console.log("project_path", project_path);
 console.log("server_path", server_path);
 console.log("client_path", client_path);
+
+
+// vorpal CLI interaction
+// type 'end' to exit node (quit)
+vorpal
+  .command('end', 'Outputs "ending session".')
+  .action(function(args, callback) {
+    this.log('ending session please wait....');
+		callback();
+		process.exit();
+  });
+
+vorpal
+  .delimiter('cards$')
+  .show();
 
 let sessionId = 0;
 let sessions = [];

@@ -39,6 +39,7 @@ var sViews = localStorage.views || "{}",
 			// localStorage.sizes = JSON.stringify(sizes)
 
 
+
 function initState (){
 	// recall editor views positions
 	
@@ -201,7 +202,7 @@ function ast2html(ast, parent, root) {
 		.html(summary)
 		.on('click', function(e) {
 			// hide/show on click
-			div.children().toggle();
+			div.children().show();
 			e.stopPropagation();
 			//console.log(id, loc)
 			highlightLine(loc)
@@ -336,7 +337,7 @@ console.log(filename)
 
 // //// Codemirror Highlighting
 var lastLine; 
-var lines = []
+var hilightedLines = []
 // ///////////////////////////////////////////////////
 function highlightLine(loc) {
 	// provide line highlighting for in the codemirror editor so user can easily spot parameters 
@@ -351,6 +352,7 @@ function highlightLine(loc) {
 	// if (pName == paramName){
 	// 	// if the parameter is different from previous change, highlight previously modified parameter as blue in the state.h
 	if (lastLine !== undefined && lastLine !== loc.begin.line) {
+		console.log("if statement: " + lastLine)
 		dv.addLineClass(lastLine, 'background', 'cm-highlight-lastLine');
 	}
 	// if new parameter change, tell cm where to highlight
@@ -364,6 +366,7 @@ function highlightLine(loc) {
 	dv.setCursor({line: loc.begin.line, ch: window.lastpo});
 	// remember the current selected line for next time we change a param
 	lastLine = loc.begin.line;
+	hilightedLines.push(lastLine)
 	// }
 	// }) 
 }
@@ -371,11 +374,11 @@ function highlightLine(loc) {
 //// clear highlights
 $(function() {
 	$("#clearHighlights").click( function(){
-
-		Object.keys(lines).forEach(function(key, value) {
+console.log(hilightedLines)
+		Object.keys(hilightedLines).forEach(function(key, value) {
 			// console.log(lines[key].begin)
 
-			dv.removeLineClass(lines[key], 'background');
+			dv.removeLineClass(hilightedLines[key], 'background');
 			lastLine = undefined;
 
 		});
