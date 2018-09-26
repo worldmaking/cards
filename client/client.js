@@ -465,6 +465,7 @@ function handleMessage(msg) {
 			// update whole scene based on msg.value
 			// console.log(msg.value);
 			let ast = msg.value;
+			console.log(msg)
 			cppSource = msg.value.files;
 			let files = Object.keys(cppSource) // set list of files
 			filePicker(files) // update the file list in the filepicker menu

@@ -1,4 +1,4 @@
-
+//Michael: next thing TODO: see near bottom of document for case "code":
 const express = require('express');
 const WebSocket = require('ws');
 
@@ -219,6 +219,39 @@ function handleMessage(msg, session) {
 			execSync("./cpp2json test.cpp test.json", {cwd: path.join(server_path, "cpp2json")}, (stdout, stderr, err) => {
 				// NEED SOMETHING THAT RECEIVES COMPILE RESULT FROM CPP2JSON
 				//if compile === true:
+
+			newAST = fs.readFileSync("./cpp2json/test.json", null, 2)
+			///////////////
+			///////////////
+			///////////////
+			///////////////
+			///////////////
+			///////////////
+			///////////////
+			// // // // // // // // // // // // URGENT			// // // // // // // // // // // // URGENT
+			// // // // // // // // // // // // URGENT
+// // // // // // // // // // // // URGENT
+			// // // // // // // // // // // // URGENT			// // // // // // // // // // // // URGENT
+
+			//TODO: based on graham's changes to cpp2json on sep 26, 
+			// the JSON will now contain a diagnostics array, and an object key "success": true/false
+			// so will need to send the diagnostics to the client, and also decide
+			// whether to commit based on the success key (or commit either way, but change the commit message based on success)
+			
+			// console.log(newAST.diagnostics)
+
+						///////////////
+			///////////////
+			///////////////
+			///////////////
+			///////////////
+			///////////////
+			///////////////
+			// // // // // // // // // // // // URGENT			// // // // // // // // // // // // URGENT
+			// // // // // // // // // // // // URGENT
+// // // // // // // // // // // // URGENT
+			// // // // // // // // // // // // URGENT			// // // // // // // // // // // // URGENT
+
 			})
 
 			// exec('git rev-parse HEAD', (stdout, stderr, err) => {
