@@ -132,14 +132,7 @@ int main(int argc, const char ** argv) {
 			clang_getSpellingLocation(loc, &file, &line, &column, &offset);
 			CXString filepath = clang_getFileName(file);
 				
-			if (clang_getDiagnosticNumRanges(diag) > 0) {
-				CXSourceRange range = clang_getDiagnosticRange(diag, 0);
-				CXSourceLocation start = clang_getRangeStart(range);
-				CXSourceLocation end = clang_getRangeEnd(range);
-				unsigned line1, column1, offset1;
-				clang_getSpellingLocation(start, &file, &line, &column, &offset);
-				clang_getSpellingLocation(end, &file, &line1, &column1, &offset1);
-			}
+			
 			
 			printf( "Diagnostic[%d] - %s(%d)- %s\n", i, clang_getCString(diagCategory), severity, clang_getCString(diagText));
 
@@ -152,10 +145,19 @@ int main(int argc, const char ** argv) {
 				{ "loc", {
 					{"filepath", clang_getCString(filepath) },
 					{"begin", { {"line", line}, {"col", column}, {"char", offset} } } 
-					//{"end", { {"line", line1}, {"col", column1}, {"char", offset1} } }
 				}}
 			};
 
+			if (clang_getDiagnosticNumRanges(diag) > 0) {
+				CXSourceRange range = clang_getDiagnosticRange(diag, 0);
+				CXSourceLocation start = clang_getRangeStart(range);
+				CXSourceLocation end = clang_getRangeEnd(range);
+				unsigned line1, column1, offset1;
+				//clang_getSpellingLocation(start, &file, &line, &column, &offset);
+				clang_getSpellingLocation(end, &file, &line1, &column1, &offset1);
+
+				jdiag["loc"]["end"] = { {"line", line1}, {"col", column1}, {"char", offset1} };
+			}
 			jdiags.push_back(jdiag);
 										
 			clang_disposeString(diagText);
