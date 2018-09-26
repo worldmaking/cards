@@ -37,6 +37,7 @@ CXChildVisitResult visit(CXCursor c, CXCursor parent, CXClientData client_data);
 
 json jdoc = {
 	{ "files", json::object() },
+	{ "diagnostics", json::array() },
 	{ "id", 0 },
 	{ "kind", "TranslationUnit" },
 	{ "nodes", json::array() }
@@ -51,9 +52,9 @@ int uid() {
 }
 
 // turn on to put loc info in the JSON tree
-bool doesJsonHaveLocations = 0;//true;
-bool doesJsonHaveComments = 0;//true;
-bool doesJsonHaveSources = 0;//true;
+bool doesJsonHaveLocations = 1;//true;
+bool doesJsonHaveComments = 1;//true;
+bool doesJsonHaveSources = 1;//true;
 
 int main(int argc, const char ** argv) {
 
@@ -112,21 +113,59 @@ int main(int argc, const char ** argv) {
 	// the parse may have produced errors:
 	// Note: even if there were errors, it still generates an AST
 	unsigned int numDiagnostics = clang_getNumDiagnostics(unit);
+	bool isSuccessful = true;
 	if (numDiagnostics) {
+		auto& jdiags = jdoc["diagnostics"];
 		// TODO: get AST locations for these.
 		// Use clang_getDiagnostic, clang_getDiagnosticSpelling, etc. to get human-readable error messages.
 		for ( unsigned int i=0; i < numDiagnostics; i++) {
 			CXDiagnostic diag = clang_getDiagnostic(unit, i);
 			CXString diagCategory = clang_getDiagnosticCategoryText(diag);
+			// CXString clang_getDiagnosticCategoryName(unsigned Category);
 			CXString diagText = clang_getDiagnosticSpelling(diag);
+			CXString diagOpt = clang_getDiagnosticOption(diag, nullptr);
 			CXDiagnosticSeverity severity = clang_getDiagnosticSeverity(diag);
+			if (severity >= 3) isSuccessful = false;
+			CXSourceLocation loc = clang_getDiagnosticLocation(diag);
+			CXFile file;
+			unsigned line, column, offset;
+			clang_getSpellingLocation(loc, &file, &line, &column, &offset);
+			CXString filepath = clang_getFileName(file);
+				
+			if (clang_getDiagnosticNumRanges(diag) > 0) {
+				CXSourceRange range = clang_getDiagnosticRange(diag, 0);
+				CXSourceLocation start = clang_getRangeStart(range);
+				CXSourceLocation end = clang_getRangeEnd(range);
+				unsigned line1, column1, offset1;
+				clang_getSpellingLocation(start, &file, &line, &column, &offset);
+				clang_getSpellingLocation(end, &file, &line1, &column1, &offset1);
+			}
+			
 			printf( "Diagnostic[%d] - %s(%d)- %s\n", i, clang_getCString(diagCategory), severity, clang_getCString(diagText));
+
+			json jdiag = {
+				{ "kind", clang_getCString(diagCategory) },
+				{ "severity", severity },
+				{ "kind", clang_getCString(diagCategory) },
+				//{ "flag", clang_getCString(diagOpt) },
+				{ "text", clang_getCString(diagText) },
+				{ "loc", {
+					{"filepath", clang_getCString(filepath) },
+					{"begin", { {"line", line}, {"col", column}, {"char", offset} } } 
+					//{"end", { {"line", line1}, {"col", column1}, {"char", offset1} } }
+				}}
+			};
+
+			jdiags.push_back(jdiag);
 										
 			clang_disposeString(diagText);
 			clang_disposeString(diagCategory);
 			clang_disposeDiagnostic(diag);
 		}
 	}
+
+	jdoc["success"] = isSuccessful;
+
 	//printf("diagnostics complete\n");
 
 	// To traverse the AST of the TU, we need a Cursor:
