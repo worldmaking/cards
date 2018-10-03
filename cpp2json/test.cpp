@@ -8,7 +8,7 @@ T foo(T x, T y) {
 //test  ss2 33 s sds sss ss sss s ss    s ss
 int bar(); 
 
-struct J im {
+struct Jim {
 
 	struct JJ {
 		int x() { return 0; }
