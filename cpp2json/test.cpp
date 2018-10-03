@@ -5,7 +5,7 @@ template<typename T>
 T foo(T x, T y) {
 	return x * y;
 }
-//test 2 33 s ss ssssss ss  s ss
+//test 2 33 s ss ssssss sss  s ss
 int bar(); 
 
 struct J im {
