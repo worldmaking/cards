@@ -4,13 +4,13 @@
 template<typename T> 
 T foo(T x, T y) {
 	return x * y;
-}
+} 
 //test  ss2 3 s3 ssss sssssss sssssssds ssss sss ssss s ss
 
-struct Ji m {
+struct Jim {
  
 	struct JJ { 
-		int x() { return 0; } 
+		int x () { return 0; } 
 	};
 	
 	int x = 0; 
