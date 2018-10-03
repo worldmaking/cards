@@ -12,6 +12,7 @@ switch (localStorage.length) {
 	$("#terminalHandle").css({ float: "left", top: 20, left: 20, width: 400 })
 	$("#sessionHistoryHandle").css({ float: "left", top: 20, left: 25, width: 400 })
 	$("#projectHistoryHandle").css({ float: "left", top: 20, left: 25, width: 400 })
+	$("#astErrorHandle").css({ float: "left", top: 20, left: 25, width: 400 })
 	break;
 }
 
@@ -20,9 +21,7 @@ $("#codeViewHandle").css({ width: $("#codeViewHandle").width() })
 $("#terminalHandle").css({ width: $("#terminalHandle").width() })
 $("#sessionHistoryHandle").css({ width: $("#sessionHistoryHandle").width() })
 $("#sprojectHistoryHandle").css({ width: $("#projectHistoryHandle").width() })
-
-console.log($( "#terminalHandle").height(), $("#terminalHandle").width(), $( "#treeHandle").height(), $("#treeHandle").width(), $( "#codeViewHandle").height(), $("#codeViewHandle").width())
-console.log($( "#terminal").height(), $("#terminal").width(), $( "#tree").height(), $("#tree").width(), $( "#codeView").height(), $("#codeView").width())
+$("#astErrorHandle").css({ width: $("#astErrorHandle").width() })
 
 // editor positions
 var sPositions = localStorage.positions || "{}",
@@ -72,6 +71,11 @@ function initState (){
 
 			} break;
 			case "projectHistoryHandle": {
+				$("#" + id).css(pos)
+				// $("#" + id).css(size)
+
+			} break;
+			case "astErrorHandle": {
 				$("#" + id).css(pos)
 				// $("#" + id).css(size)
 
@@ -172,6 +176,20 @@ $( "#projectHistoryHandle" ).draggable({ handle: "p", scroll: true, scrollSensit
 		
 	}
 });
+$( "#astErrorHandle" ).draggable({ handle: "p", scroll: true, scrollSensitivity: 100, stop: function (event, ui) {
+	positions[this.id] = ui.position
+	localStorage.positions = JSON.stringify(positions)
+	}
+})
+.resizable({
+	alsoResize: "#astError", 
+	stop: function (event, ui) {
+		sizes[this.id] = ui.size
+		localStorage.sizes = JSON.stringify(sizes)
+		console.log(localStorage.sizes)
+		
+	}
+});
 
 // $("#draggable3").draggable({
 //     containment: "#containment-wrapper",
@@ -205,7 +223,7 @@ function ast2html(ast, parent, root) {
 			div.children().show();
 			e.stopPropagation();
 			//console.log(id, loc)
-			highlightLine(loc)
+			highlightLine(loc.begin.line)
 		})
 		.appendTo(parent);
 
@@ -295,9 +313,14 @@ function cpp2CodeMirror(cppSource) {
 	//key bindings for left editor
 	var leftMap = {
 		// OSX
-		"Cmd-S": function(cm){saveCode();},
+		"Cmd-S": function(cm){
+			saveCode()
+			clearErrors();
+		},
 		// Windows
-		"Ctrl-S": function(cm){saveCode();}
+		"Ctrl-S": function(cm){
+			saveCode()
+			clearErrors();}
 	}
 	dv.addKeyMap(leftMap);
 
@@ -347,6 +370,7 @@ function highlightLine(loc) {
 	// pName = state[key].paramName;
 	// begin = state[key].begin - 1;
 	// end = state[key].end;
+	console.log(loc)
 	line = loc.begin.line -1
 	// tell codemirror to highlight the chosen line
 	// if (pName == paramName){
@@ -371,7 +395,8 @@ function highlightLine(loc) {
 	// }) 
 }
 
-//// clear highlights
+
+
 $(function() {
 	$("#clearHighlights").click( function(){
 console.log(hilightedLines)
@@ -384,6 +409,70 @@ console.log(hilightedLines)
 		});
 	});
 })
+
+// //// Codemirror ERROR Highlighting
+var lastError; 
+var hilightedErrors = []
+// ///////////////////////////////////////////////////
+function highlightError(loc) {
+	// provide line highlighting for in the codemirror editor so user can easily spot parameters 
+	// in the state.h file:
+	// get the begin-end lines of each parameter within the state.h!
+	// Object.keys(state).forEach(function(key, value) {
+	// pName = state[key].paramName;
+	// begin = state[key].begin - 1;
+	// end = state[key].end;
+	console.log(loc)
+	line = loc -1
+	// tell codemirror to highlight the chosen line
+	// if (pName == paramName){
+	// 	// if the parameter is different from previous change, highlight previously modified parameter as blue in the state.h
+	if (lastError !== undefined && lastError !== line) {
+		console.log("if statement: " + lastError)
+		dv.addLineClass(lastError, 'background', 'cm-highlight-lastError');
+	}
+	// if new parameter change, tell cm where to highlight
+	var t = dv.charCoords({line: line, ch: 0}, "local").top; 
+	var middleHeight = dv.getScrollerElement().offsetHeight / 2; 
+	// focus the editor's page around the line
+	dv.scrollTo(null, t - middleHeight - 5);
+	// apply highlight to the selected parameter-line
+	dv.addLineClass(line, 'background', 'cm-highlight-error');
+	// set the cm cursor to the line
+	dv.setCursor({line: line, ch: window.lastpo});
+	// remember the current selected line for next time we change a param
+	lastError = line;
+	hilightedErrors.push(lastError)
+	// }
+	// }) 
+}
+
+
+function clearErrors(){
+	// clear the error highlights
+	Object.keys(hilightedErrors).forEach(function(key, value) {
+		dv.removeLineClass(hilightedErrors[key], 'background');
+		lastError = undefined;
+	});
+
+	// clear the error console
+	document.getElementById('astErrorSelect').options.length = 0;
+	}
+
+// //// clear highlights
+// $(function() {
+// 	$("#clearHighlights").click( function(){
+// console.log(hilightedErrors)
+// 		Object.keys(hilightedErrors).forEach(function(key, value) {
+// 			// console.log(lines[key].begin)
+
+// 			dv.removeLineClass(hilightedErrors[key], 'background');
+// 			lastError = undefined;
+
+// 		});
+// 	});
+// })
+
 
 $(function() {
 	$("#clearLocalStorage").click( function(){
@@ -473,7 +562,8 @@ function handleMessage(msg) {
 			$("#tree").children().remove(); // clear the tree
 			ast2html(ast, $("#tree"), ast); // decorate the tree...
 			
-			break;
+
+		break;
 		case "git":
 		console.log(msg.hash)
 		hash = msg.hash.split(" ")[0]
@@ -483,38 +573,47 @@ function handleMessage(msg) {
 		
 		commitMsg = msg.hash.replace(/^\S+/g, '')
 		entry = time + " " + commitMsg
-		//var branchesList = arg.split('\n')
-		// console.log(branchesList)
-		// usebranchList = JSON.parse(arg);
-
-
-
-
 		var sel = document.getElementById('sessionHistorySelect')
-		// var length = select;
 
-		// for (i = 3; i < sel.length; i++) {
-		//     sel.options[i] = null;
-		//     }
-
-		
 			var opt = document.createElement('option')
 			opt.appendChild(document.createTextNode(entry))
 			opt.value = hash
 			sel.appendChild(opt)
+		break;
 
-/*
-		Object.values(branchesList).forEach(function (value, key) {
-			var opt = document.createElement('option')
-			opt.appendChild( document.createTextNode(value))
-			opt.value = value
-			sel.appendChild(opt)
-			// find out the current branch, and highlight it in the select.
-			if (value.includes('*')) {
-				sel.selectedIndex = key
-			}
-		})
-		*/
+		case "update": 
+			
+			updatedAST = JSON.stringify(msg.value.diagnostics)
+			//console.log("update\n" + updatedAST)
+
+			msg.value.diagnostics.forEach(function (item) {
+				console.log('line ' + item.loc.begin.line + ': ' + item.kind);
+				//console.log(item.loc);
+
+				//console.log(item.severity);
+
+				var sel = document.getElementById('astErrorSelect')
+				var opt = document.createElement('option')
+				opt.appendChild(document.createTextNode('line ' + item.loc.begin.line + ': ' + item.kind))
+				opt.value = item.loc.begin.line
+				sel.appendChild(opt)
+
+			})
+
+
+			
+
+
+			
+
+			// updatedAST.diagnostics.forEach(function (item) {
+			// 	console.log(item)
+			// })
+
+
+			
+		
+		break;
 
 	}
 }

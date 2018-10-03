@@ -63,3 +63,5 @@ body {
 .cm-highlight-lastLine {color: rgb(144, 182, 238); background-color: rgb(0, 102, 128)}
 .CodeMirror-selection-highlight-scrollbar {background-color: green}
 
+.cm-highlight-error {color: rgb(255, 112, 112); background-color: rgb(255, 81, 81)}
+.cm-highlight-lastError {color: rgb(255, 184, 126); background-color: rgb(255, 133, 62)}

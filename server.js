@@ -35,6 +35,17 @@ vorpal
 
 vorpal
   .delimiter('cards$')
+	.show();
+
+vorpal
+  .command('help', 'Outputs "help".')
+  .action(function(args, callback) {
+    this.log('"\'end\' ---- stop cards server"');
+		callback();
+  });
+
+vorpal
+  .delimiter('cards$')
   .show();
 
 let sessionId = 0;
@@ -148,6 +159,19 @@ function send_ast(ast, session) {
 	}));
 }
 
+
+function update(ast, session) {
+	console.log(ast)
+	session.socket.send(JSON.stringify({
+		session: session.id,
+		date: Date.now(),
+		type: "update",
+		value: ast
+	}));
+}
+
+
+
 function cpp2json(filename, session){
 	console.log("cpp2json " + session)
 	execSync("./cpp2json test.cpp test.json", {cwd: path.join(server_path, "cpp2json")}, (stdout, stderr, err) => {
@@ -174,31 +198,30 @@ function cpp2json(filename, session){
 }
 
 function git(session, filename){
-	console.log(session, filename, path.join(project_path, filename))
+	console.log('session ' + session.id, filename, path.join(project_path, filename))
 		// add and commit it to the repo
   exec('git add ' + path.join(project_path, filename))
 	exec('git commit -m "successful compile"', (stdout, stderr, err) => {
-		console.log(stdout, stderr, err)
+		stderr.substring(0,stderr.indexOf(']')+1)
+
+		exec('git log --pretty=oneline -1', (stdout, stderr, err) => {
+			// console.log("\n\n\n stdout is " + stdout)
+			console.log("\nnew commit at hash: " + stderr)
+			// console.log("\n\n\n err is " + err)
+			hash = stderr;
+			// if commit successful, pass the commit hash to the git function
+			session.socket.send(JSON.stringify({
+				filename: filename,
+				session: session.id,
+				date: Date.now(),
+				type: "git",
+				hash: hash,
+				//data: hash
+			}))
+	
+		})
 	})
 	// eventually could run this instead : "git log -1" > it returns the HEAD commit, plus author name and branch
-	exec('git log --pretty=oneline -1', (stdout, stderr, err) => {
-		// console.log("\n\n\n stdout is " + stdout)
-		console.log("\n\n\n stderr is " + stderr)
-		// console.log("\n\n\n err is " + err)
-		hash = stderr;
-		// if commit successful, pass the commit hash to the git function
-		session.socket.send(JSON.stringify({
-			filename: filename,
-			session: session.id,
-			date: Date.now(),
-			type: "git",
-			hash: hash,
-			//data: hash
-		}))
-
-	})
-
-
 
 }
 
@@ -220,7 +243,7 @@ function handleMessage(msg, session) {
 				// NEED SOMETHING THAT RECEIVES COMPILE RESULT FROM CPP2JSON
 				//if compile === true:
 
-			newAST = fs.readFileSync("./cpp2json/test.json", null, 2)
+			
 			///////////////
 			///////////////
 			///////////////
@@ -237,8 +260,7 @@ function handleMessage(msg, session) {
 			// the JSON will now contain a diagnostics array, and an object key "success": true/false
 			// so will need to send the diagnostics to the client, and also decide
 			// whether to commit based on the success key (or commit either way, but change the commit message based on success)
-			
-			// console.log(newAST.diagnostics)
+
 
 						///////////////
 			///////////////
@@ -253,13 +275,26 @@ function handleMessage(msg, session) {
 			// // // // // // // // // // // // URGENT			// // // // // // // // // // // // URGENT
 
 			})
+			newAST = JSON.parse(fs.readFileSync("cpp2json/test.json", null, 2))
+			//console.log(newAST)
+			//console.log(newAST)
+			update(newAST, session)
+
+			if (newAST.diagnostics.length > 0) {
+
+				// if diagnostics report errors, do <this> server-side
+			} else {
+				// if no errors in diagnostics, commit!
+				git(session, msg.filename);
+			}
+
 
 			// exec('git rev-parse HEAD', (stdout, stderr, err) => {
 			// 	console.log("\n\n\n stdout is " + stdout)
 			// 	console.log("\n\n\n stderr is " + stderr)
 			// 	console.log("\n\n\n err is " + err)
 			// })
-			git(session, msg.filename);
+
 		}
 
 		break

@@ -7,7 +7,7 @@ T foo(T x, T y) {
 }
 //test  ss2 3 s3 ssss sssssss sssssssds ssss sss ssss s ss
 
-struct Jim {
+struct Ji m {
  
 	struct JJ { 
 		int x() { return 0; } 
@@ -22,9 +22,9 @@ struct Jim {
    
  Jim jim;  
   
-int bar() { 
+int bar() {  
 	jim.x++; 
-	return 10;  
+	return 10;   
 }   
   
 int main(int argc, char ** argv) {
