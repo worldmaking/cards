@@ -24,7 +24,7 @@ struct Jim {
   
 int bar() { 
 	jim.x++; 
-	return 10; 
+	return 10;  
 }   
   
 int main(int argc, char ** argv) {
