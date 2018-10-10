@@ -1,11 +1,10 @@
-
+int bar();
 
 // multiploy
 template<typename T> 
 T foo(T x, T y) {
 	return x * y;
 } 
-//test  sss2  3 s3 ssss sssssss sssssssds ssss sss ssss s ss
 
 struct Jim {
  
