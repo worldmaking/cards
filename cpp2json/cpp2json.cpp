@@ -155,7 +155,6 @@ int main(int argc, const char ** argv) {
 				unsigned line1, column1, offset1;
 				//clang_getSpellingLocation(start, &file, &line, &column, &offset);
 				clang_getSpellingLocation(end, &file, &line1, &column1, &offset1);
-
 				jdiag["loc"]["end"] = { {"line", line1}, {"col", column1}, {"char", offset1} };
 			}
 			jdiags.push_back(jdiag);
