@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>cards visual prototyping</title>
+  
+  
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css'>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- module for filtering results in the library card -->
+    <script type="text/javascript" src="js/libSearch.js"></script>
+    <!-- module for mangling text into div id-ready strings -->
+    <script type="text/javascript" src="js/mangler.js"></script>
+    <script src='js/peg.min.js'></script>
+    <script src='js/jquery.min.js'></script>
+    <script src='js/select2.min.js'></script>
+
+</head>
+
+<body>
+
+<div class="columns">
+  <div id="graph" class="column">
+
+    <svg id="svgcanvas"></svg> 
+  </div>
+  
+  <div id="library" class="column"><strong>library:</strong>
+<!--   library searcher   -->
+    <br>
+    <select class="libsearch" name="states[]" multiple="multiple">
+</select>
+  </div>
+  <div id="info" class="column"></div>
+  <div id="ast" class="column"><strong>ast:</strong></div>
+  <div id="code" class="column"><strong>code:</strong></div>
+  
+</div>
+<script id="grammar" type="text/pegjs">
+
+    Items = (__* f:Item __* { return f })*
+    
+    Item = CommentedStructItem / CommentedFunctionItem / CommentedVarDeclItem / FreeComments
+    
+    CommentedStructItem = comments:Comment* "struct" __* name:VarName __* "{" 
+        __* body:Items __* "}" __* ";"? __* {
+        return {
+            kind: "StructDecl",
+            name: name,
+            body: body,
+            comments: comments.join("\n")
+        };
+    }
+    
+    CommentedVarDeclItem = comments:Comment* decl:VarDeclExpr _* ";" {
+        return {
+          kind: "VarDecl",
+          comments: comments,
+          decl: decl
+      }
+    }
+    
+    VarDeclExpr = ty:Type __+ name:VarName {
+        return {
+          kind: "VarDeclExpr",
+          name: name,
+          ty: ty
+      }
+    }
+    
+    CommentedFunctionItem = comments:Comment* fun:FunctionPrototype _* ";" {
+        if (comments) fun.comments = comments.join("\n");
+        return fun;
+    }
+    
+    FunctionPrototype = ret:Type _+ name:VarName _* params:ParameterList {
+        return {
+            kind: "FunctionPrototype",
+            name: name,
+            return_type: ret,
+            params: params,
+            label: text()
+        }
+    }
+    
+    EmptyParameterList = "(" _* "void"? _* ")" {
+        return [];
+    }
+    
+    ParameterList = EmptyParameterList / "(" _* a:Parameter b:(_* "," _* p:Parameter { return p; })* _* ")" {
+        return [a].concat(b);
+    }
+    
+    Parameter = ty:Type _+ name:VarName {
+        return { type:ty, name:name };
+    }
+    
+    VarName = $([a-zA-Z] [a-zA-Z0-9]*)
+    
+    BlockComment = _* "/*" s:$(!"*/" .)* "*/" __* { return s.trim(); }
+    LineComment = _* "//" s:$(!"\n" .)* __* { return s.trim(); }
+    Comment = (LineComment / BlockComment)
+    FreeComments = c:Comment+ {
+        return {
+            kind: "Comments",
+            comments: c.join("\n")
+        };
+    }
+    
+    Type = NoType / BuiltInType
+    
+    BuiltInType = typename:builtintypename {
+        return { type:"BuiltInType", name:typename };    
+    }	
+    
+    NoType = "void" { return undefined; }
+    
+    builtintypename = "int" / "float"
+    
+    _ = [ \t]
+    __ = [ \t\n]
+    </script>
+    <script id="header" type="text/plain">
+    // this zaps x into another int
+    int zap(int x);
+    /*
+      this zips up two numbers into an int
+    */
+    int zip(float x, float y);
+    // this doesn't do anything
+    // not a thing
+    // but it might have a side-effect
+    void nothing();
+    </script>
+
+
+
+    <script src="js/index.js"></script>
+
+</body>
+
+</html>

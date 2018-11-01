@@ -1,0 +1,81 @@
+Items = (__* f:Item __* { return f })*
+
+Item = CommentedStructItem / CommentedFunctionItem / CommentedVarDeclItem / FreeComments
+
+CommentedStructItem = comments:Comment* "struct" __* name:VarName __* "{" 
+	__* body:Items __* "}" __* ";"? __* {
+	return {
+    	kind: "StructDecl",
+        name: name,
+        body: body,
+        comments: comments.join("\n")
+    };
+}
+
+CommentedVarDeclItem = comments:Comment* decl:VarDeclExpr _* ";" {
+	return {
+      kind: "VarDecl",
+      comments: comments,
+      decl: decl
+  }
+}
+
+VarDeclExpr = ty:Type __+ name:VarName {
+	return {
+      kind: "VarDeclExpr",
+      name: name,
+      ty: ty
+  }
+}
+
+CommentedFunctionItem = comments:Comment* fun:FunctionPrototype _* ";" {
+	if (comments) fun.comments = comments.join("\n");
+    return fun;
+}
+
+FunctionPrototype = ret:Type _+ name:VarName _* params:ParameterList {
+	return {
+    	kind: "FunctionPrototype",
+    	name: name,
+    	return_type: ret,
+        params: params,
+        label: text()
+    }
+}
+
+EmptyParameterList = "(" _* "void"? _* ")" {
+	return [];
+}
+
+ParameterList = EmptyParameterList / "(" _* a:Parameter b:(_* "," _* p:Parameter { return p; })* _* ")" {
+	return [a].concat(b);
+}
+
+Parameter = ty:Type _+ name:VarName {
+	return { type:ty, name:name };
+}
+
+VarName = $([a-zA-Z] [a-zA-Z0-9]*)
+
+BlockComment = _* "/*" s:$(!"*/" .)* "*/" __* { return s.trim(); }
+LineComment = _* "//" s:$(!"\n" .)* __* { return s.trim(); }
+Comment = (LineComment / BlockComment)
+FreeComments = c:Comment+ {
+	return {
+    	kind: "Comments",
+        comments: c.join("\n")
+    };
+}
+
+Type = NoType / BuiltInType
+
+BuiltInType = typename:builtintypename {
+	return { type:"BuiltInType", name:typename };    
+}	
+
+NoType = "void" { return undefined; }
+
+builtintypename = "int" / "float"
+
+_ = [ \t]
+__ = [ \t\n]

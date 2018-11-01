@@ -1,0 +1,10 @@
+// this zaps x into another int
+int zap(int x);
+/*
+  this zips up two numbers into an int
+*/
+int zip(float x, float y);
+// this doesn't do anything
+// not a thing
+// but it might have a side-effect
+void nothing();

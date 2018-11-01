@@ -38,7 +38,6 @@ var sViews = localStorage.views || "{}",
 			// localStorage.sizes = JSON.stringify(sizes)
 
 
-
 function initState (){
 	// recall editor views positions
 	
