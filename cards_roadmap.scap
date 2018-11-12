@@ -1,40 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ScappleDocument Version="1.1" ID="A43F5C00-3806-47EC-9D89-359E7DC6C065">
     <Notes>
-        <Note ID="0" FontSize="12.0" Position="284.075761,160.773438" Width="200.0">
+        <Note ID="0" FontSize="12.0" Position="543.0,178.0" Width="200.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>git as a creative medium, how that integrates into michael’s thesis research</String>
+            <ConnectedNoteIDs>3</ConnectedNoteIDs>
         </Note>
-        <Note ID="1" FontSize="12.0" Position="632.364823,153.34375" Width="89.0">
+        <Note ID="1" FontSize="12.0" Position="796.0,192.0" Width="89.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>vr-in-vr project,</String>
-            <ConnectedNoteIDs>2</ConnectedNoteIDs>
+            <ConnectedNoteIDs>2-3</ConnectedNoteIDs>
         </Note>
-        <Note ID="2" FontSize="12.0" Position="714.755448,209.0" Width="200.0">
+        <Note ID="2" FontSize="12.0" Position="718.0,273.0" Width="200.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>goals of collaborative coding in a non-virtual way in a full space</String>
             <ConnectedNoteIDs>1</ConnectedNoteIDs>
         </Note>
-        <Note ID="3" FontSize="12.0" Position="515.700761,34.78125" Width="37.0">
+        <Note ID="3" FontSize="12.0" Position="801.0,80.0" Width="37.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>goals</String>
+            <ConnectedNoteIDs>0-1, 77</ConnectedNoteIDs>
         </Note>
-        <Note ID="4" FontSize="12.0" Position="1342.620528,60.0" Width="145.0">
+        <Note ID="4" FontSize="12.0" Position="2033.0,60.0" Width="145.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>concrete existing material</String>
             <ConnectedNoteIDs>5-6</ConnectedNoteIDs>
         </Note>
-        <Note ID="5" FontSize="12.0" Position="1725.33361,45.450444" Width="123.0">
+        <Note ID="5" FontSize="12.0" Position="2416.0,45.0" Width="123.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
@@ -42,7 +44,7 @@
             <ConnectedNoteIDs>4, 7, 38</ConnectedNoteIDs>
             <PointsToNoteIDs>38</PointsToNoteIDs>
         </Note>
-        <Note ID="6" FontSize="12.0" Position="1241.132247,158.503906" Width="175.0">
+        <Note ID="6" FontSize="12.0" Position="1931.0,159.0" Width="175.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
@@ -50,7 +52,7 @@
             <ConnectedNoteIDs>4, 8, 12, 38</ConnectedNoteIDs>
             <PointsToNoteIDs>12</PointsToNoteIDs>
         </Note>
-        <Note ID="7" FontSize="12.0" Position="2000.281673,96.417036" Width="200.0">
+        <Note ID="7" FontSize="12.0" Position="2691.0,96.0" Width="200.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
@@ -59,28 +61,28 @@
 to develop an editor, its useful to have at least one working application (alicenode editor had alicenode_inhabitat)</String>
             <ConnectedNoteIDs>5, 8</ConnectedNoteIDs>
         </Note>
-        <Note ID="8" FontSize="12.0" Position="1958.488164,286.468726" Width="200.0">
+        <Note ID="8" FontSize="12.0" Position="2649.0,286.0" Width="200.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>we didn’t have a n application, we didn’t have aspecific one</String>
             <ConnectedNoteIDs>6-7, 9-10</ConnectedNoteIDs>
         </Note>
-        <Note ID="9" FontSize="12.0" Position="2473.238249,99.33603" Width="119.0">
+        <Note ID="9" FontSize="12.0" Position="3164.0,99.0" Width="119.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>considered rhino sdk</String>
             <ConnectedNoteIDs>8, 11</ConnectedNoteIDs>
         </Note>
-        <Note ID="10" FontSize="12.0" Position="1945.912343,386.296235" Width="29.0">
+        <Note ID="10" FontSize="12.0" Position="2636.0,386.0" Width="29.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>c++</String>
             <ConnectedNoteIDs>8, 41, 45-47, 50</ConnectedNoteIDs>
         </Note>
-        <Note ID="11" FontSize="12.0" Position="2474.324186,171.378999" Width="152.0">
+        <Note ID="11" FontSize="12.0" Position="3165.0,171.0" Width="152.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
@@ -88,24 +90,24 @@ to develop an editor, its useful to have at least one working application (alice
 </String>
             <ConnectedNoteIDs>9</ConnectedNoteIDs>
         </Note>
-        <Note ID="12" FontSize="12.0" Position="466.109375,883.53442" Width="200.0">
+        <Note ID="12" FontSize="12.0" Position="1298.0,551.0" Width="191.0">
             <Appearance>
                 <Alignment>Left</Alignment>
                 <Border Weight="1">0.477193 0.557066 0.76433</Border>
                 <Fill>0.840969 0.866828 0.925903</Fill>
             </Appearance>
             <String>simplify by targeting javascript instead</String>
-            <ConnectedNoteIDs>6, 13, 16</ConnectedNoteIDs>
+            <ConnectedNoteIDs>6, 13, 16, 66</ConnectedNoteIDs>
             <PointsToNoteIDs>13, 16</PointsToNoteIDs>
         </Note>
-        <Note ID="13" FontSize="12.0" Position="397.542969,1030.65942" Width="200.0">
+        <Note ID="13" FontSize="12.0" Position="1088.0,1031.0" Width="200.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>simplified space usfeulf for linking directly with git work. specific and task we could pick on for an mvp:</String>
             <ConnectedNoteIDs>12, 14</ConnectedNoteIDs>
         </Note>
-        <Note ID="14" FontSize="12.0" Position="382.488281,1155.538326" Width="177.0">
+        <Note ID="14" FontSize="12.0" Position="1073.0,1156.0" Width="177.0">
             <Appearance>
                 <Alignment>Left</Alignment>
                 <Border Weight="1">0.331867 0.609932 0.356197</Border>
@@ -115,30 +117,31 @@ to develop an editor, its useful to have at least one working application (alice
             <ConnectedNoteIDs>13, 15, 18, 28-32</ConnectedNoteIDs>
             <PointsToNoteIDs>32</PointsToNoteIDs>
         </Note>
-        <Note ID="15" FontSize="12.0" Position="362.734375,1286.979732" Width="200.0">
+        <Note ID="15" FontSize="12.0" Position="1053.0,1287.0" Width="200.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>genuine problem. no existing solution as far as we can tell. </String>
             <ConnectedNoteIDs>14</ConnectedNoteIDs>
         </Note>
-        <Note ID="16" FontSize="12.0" Position="893.601562,946.382076" Width="157.0">
+        <Note ID="16" FontSize="12.0" Position="1579.0,881.0" Width="157.0">
             <Appearance>
                 <Alignment>Left</Alignment>
                 <Border Weight="1">0.747881 0.366532 0.542813</Border>
                 <Fill>0.918452 0.807302 0.863467</Fill>
             </Appearance>
             <String>we need a visual editor in vr</String>
-            <ConnectedNoteIDs>12, 17-18</ConnectedNoteIDs>
+            <ConnectedNoteIDs>12, 17-18, 87, 101</ConnectedNoteIDs>
+            <PointsToNoteIDs>101</PointsToNoteIDs>
         </Note>
-        <Note ID="17" FontSize="12.0" Position="1086.90625,944.061763" Width="200.0">
+        <Note ID="17" FontSize="12.0" Position="1777.0,944.0" Width="200.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>the screen-based editor needs to be pretty similar to the vr one (mouse-based))</String>
             <ConnectedNoteIDs>16</ConnectedNoteIDs>
         </Note>
-        <Note ID="18" FontSize="12.0" Position="728.992188,1043.010982" Width="200.0">
+        <Note ID="18" FontSize="12.0" Position="1419.0,1043.0" Width="200.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
@@ -146,55 +149,55 @@ to develop an editor, its useful to have at least one working application (alice
             <ConnectedNoteIDs>14, 16</ConnectedNoteIDs>
             <PointsToNoteIDs>14</PointsToNoteIDs>
         </Note>
-        <Note ID="19" FontSize="12.0" Position="1342.875,1020.339107" Width="121.0">
+        <Note ID="19" FontSize="12.0" Position="2033.0,1020.0" Width="121.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>granularity of change</String>
-            <ConnectedNoteIDs>24-26, 32-34</ConnectedNoteIDs>
+            <ConnectedNoteIDs>24-26, 32-34, 63-65</ConnectedNoteIDs>
         </Note>
-        <Note ID="20" FontSize="12.0" Position="1390.441406,965.296138" Width="73.0">
+        <Note ID="20" FontSize="12.0" Position="2027.0,956.0" Width="56.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>key concept</String>
         </Note>
-        <Note ID="22" FontSize="12.0" Position="1270.449219,1144.999263" Width="200.0">
+        <Note ID="22" FontSize="12.0" Position="1961.0,1145.0" Width="200.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>if you’re editing the c++ code, it will require recompiling entire cPP at a change. we did manage to maintain the state, but still the rest was recompiled</String>
             <ConnectedNoteIDs>24</ConnectedNoteIDs>
         </Note>
-        <Note ID="23" FontSize="12.0" Position="1540.601562,1138.59692" Width="200.0">
+        <Note ID="23" FontSize="12.0" Position="2231.0,1139.0" Width="200.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>another level of granularity was editing shaders. you can hot-reload a shader. </String>
             <ConnectedNoteIDs>25</ConnectedNoteIDs>
         </Note>
-        <Note ID="24" FontSize="12.0" Position="1359.292969,1081.600826" Width="43.0">
+        <Note ID="24" FontSize="12.0" Position="2050.0,1082.0" Width="43.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>level 1</String>
             <ConnectedNoteIDs>19, 22</ConnectedNoteIDs>
         </Note>
-        <Note ID="25" FontSize="12.0" Position="1502.160156,1076.718013" Width="43.0">
+        <Note ID="25" FontSize="12.0" Position="2193.0,1077.0" Width="43.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>level 2</String>
             <ConnectedNoteIDs>19, 23</ConnectedNoteIDs>
         </Note>
-        <Note ID="26" FontSize="12.0" Position="976.769531,1055.979732" Width="200.0">
+        <Note ID="26" FontSize="12.0" Position="1667.0,1056.0" Width="200.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>with js, we could have (perhaps) arbitrarily many levels of granularity</String>
             <ConnectedNoteIDs>19</ConnectedNoteIDs>
         </Note>
-        <Note ID="27" FontSize="12.0" Position="949.746094,1255.745357" Width="200.0">
+        <Note ID="27" FontSize="12.0" Position="1640.0,1256.0" Width="200.0">
             <Appearance>
                 <Alignment>Left</Alignment>
                 <Border Weight="1">0.331867 0.609932 0.356197</Border>
@@ -203,21 +206,21 @@ to develop an editor, its useful to have at least one working application (alice
             <String>be able to see multiple instances of the running application at the same time</String>
             <ConnectedNoteIDs>32</ConnectedNoteIDs>
         </Note>
-        <Note ID="28" FontSize="12.0" Position="80.25,1178.167232" Width="200.0">
+        <Note ID="28" FontSize="12.0" Position="771.0,1178.0" Width="200.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>on one level you’re seeing multiple levels of the code</String>
             <ConnectedNoteIDs>14</ConnectedNoteIDs>
         </Note>
-        <Note ID="29" FontSize="12.0" Position="100.015625,1243.026607" Width="200.0">
+        <Note ID="29" FontSize="12.0" Position="790.0,1243.0" Width="200.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>you’re also seeing multiple instances of the running code</String>
             <ConnectedNoteIDs>14</ConnectedNoteIDs>
         </Note>
-        <Note ID="30" FontSize="12.0" Position="660.566406,1151.050045" Width="194.0">
+        <Note ID="30" FontSize="12.0" Position="1351.0,1151.0" Width="194.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
@@ -225,28 +228,28 @@ to develop an editor, its useful to have at least one working application (alice
             <ConnectedNoteIDs>14</ConnectedNoteIDs>
             <PointsToNoteIDs>14</PointsToNoteIDs>
         </Note>
-        <Note ID="31" FontSize="12.0" Position="20.0,1047.905513" Width="200.0">
+        <Note ID="31" FontSize="12.0" Position="710.0,1048.0" Width="200.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>multiple people collaborating in the same space. they may not be seeing the same thing as you. you might want to dip into their world (potentially might be same project, different scale; might also be same world but minor variations in code) </String>
             <ConnectedNoteIDs>14</ConnectedNoteIDs>
         </Note>
-        <Note ID="32" FontSize="12.0" Position="645.488281,1288.78442" Width="200.0">
+        <Note ID="32" FontSize="12.0" Position="1336.0,1289.0" Width="200.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>idea of multiple instances of this world running at the same time, at some level of granulatiry</String>
             <ConnectedNoteIDs>14, 19, 27</ConnectedNoteIDs>
         </Note>
-        <Note ID="33" FontSize="12.0" Position="1677.554688,1037.694576" Width="131.0">
+        <Note ID="33" FontSize="12.0" Position="2368.0,1038.0" Width="131.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>what is an atomic edit?</String>
             <ConnectedNoteIDs>19, 35</ConnectedNoteIDs>
         </Note>
-        <Note ID="34" FontSize="12.0" Position="1686.726562,857.436763" Width="200.0">
+        <Note ID="34" FontSize="12.0" Position="2377.0,857.0" Width="200.0">
             <Appearance>
                 <Alignment>Left</Alignment>
                 <Border Weight="1">0.331867 0.609932 0.356197</Border>
@@ -255,28 +258,28 @@ to develop an editor, its useful to have at least one working application (alice
             <String>how do we represent a unit of change in a graph?</String>
             <ConnectedNoteIDs>19, 37</ConnectedNoteIDs>
         </Note>
-        <Note ID="35" FontSize="12.0" Position="1853.425781,1100.444576" Width="200.0">
+        <Note ID="35" FontSize="12.0" Position="2544.0,1100.0" Width="200.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>paper about ‘undo’, and also relevant to multiple worlds. </String>
             <ConnectedNoteIDs>33, 36, 40</ConnectedNoteIDs>
         </Note>
-        <Note ID="36" FontSize="12.0" Position="1976.378906,1055.327388" Width="121.0">
+        <Note ID="36" FontSize="12.0" Position="2667.0,1055.0" Width="121.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>fabulous undo button</String>
             <ConnectedNoteIDs>35</ConnectedNoteIDs>
         </Note>
-        <Note ID="37" FontSize="12.0" Position="1885.785156,921.897701" Width="200.0">
+        <Note ID="37" FontSize="12.0" Position="2576.0,922.0" Width="200.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>need to solve this in order to connect visual patching with git history</String>
             <ConnectedNoteIDs>34</ConnectedNoteIDs>
         </Note>
-        <Note ID="38" FontSize="12.0" Position="1676.104738,113.65715" Width="200.0">
+        <Note ID="38" FontSize="12.0" Position="2366.0,114.0" Width="200.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
@@ -284,55 +287,55 @@ to develop an editor, its useful to have at least one working application (alice
             <ConnectedNoteIDs>5-6</ConnectedNoteIDs>
             <PointsToNoteIDs>6</PointsToNoteIDs>
         </Note>
-        <Note ID="39" FontSize="12.0" Position="2092.956523,1235.980338" Width="200.0">
+        <Note ID="39" FontSize="12.0" Position="2783.0,1236.0" Width="200.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>ideas about history and preservation of state</String>
             <ConnectedNoteIDs>40</ConnectedNoteIDs>
         </Note>
-        <Note ID="40" FontSize="12.0" Position="2059.487901,1163.357785" Width="200.0">
+        <Note ID="40" FontSize="12.0" Position="2750.0,1163.0" Width="200.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>“Worlds: Controlling the Scope of Side Effects” (Warth et al. 2008)</String>
             <ConnectedNoteIDs>35, 39</ConnectedNoteIDs>
         </Note>
-        <Note ID="41" FontSize="12.0" Position="2423.967407,260.878727" Width="105.0">
+        <Note ID="41" FontSize="12.0" Position="3114.0,261.0" Width="105.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>ast representation</String>
             <ConnectedNoteIDs>10, 42</ConnectedNoteIDs>
         </Note>
-        <Note ID="42" FontSize="12.0" Position="2719.104092,498.474355" Width="109.0">
+        <Note ID="42" FontSize="12.0" Position="3409.0,498.0" Width="109.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>projectional editing</String>
             <ConnectedNoteIDs>41, 45, 48, 50</ConnectedNoteIDs>
         </Note>
-        <Note ID="44" FontSize="12.0" Position="2754.222586,423.752779" Width="73.0">
+        <Note ID="44" FontSize="12.0" Position="3445.0,424.0" Width="73.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>key concept</String>
         </Note>
-        <Note ID="45" FontSize="12.0" Position="2344.250126,342.737999" Width="123.0">
+        <Note ID="45" FontSize="12.0" Position="3035.0,343.0" Width="123.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>control flow prototype</String>
             <ConnectedNoteIDs>10, 42, 46</ConnectedNoteIDs>
         </Note>
-        <Note ID="46" FontSize="12.0" Position="2328.247345,413.19467" Width="125.0">
+        <Note ID="46" FontSize="12.0" Position="3019.0,413.0" Width="125.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>cable types / node types restrict connection types</String>
             <ConnectedNoteIDs>10, 45</ConnectedNoteIDs>
         </Note>
-        <Note ID="47" FontSize="12.0" Position="2189.016927,450.261496" Width="72.0">
+        <Note ID="47" FontSize="12.0" Position="2879.0,450.0" Width="72.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
@@ -340,42 +343,42 @@ to develop an editor, its useful to have at least one working application (alice
             <ConnectedNoteIDs>10, 48</ConnectedNoteIDs>
             <PointsToNoteIDs>48</PointsToNoteIDs>
         </Note>
-        <Note ID="48" FontSize="12.0" Position="2386.534866,493.335776" Width="66.0">
+        <Note ID="48" FontSize="12.0" Position="3077.0,493.0" Width="66.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>Library (language agnostic)</String>
             <ConnectedNoteIDs>42, 47, 49, 61-62</ConnectedNoteIDs>
         </Note>
-        <Note ID="49" FontSize="12.0" Position="2477.037898,541.041814" Width="101.0">
+        <Note ID="49" FontSize="12.0" Position="3167.0,541.0" Width="101.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>user-generated excerpts of code</String>
             <ConnectedNoteIDs>48</ConnectedNoteIDs>
         </Note>
-        <Note ID="50" FontSize="12.0" Position="2394.22865,682.376453" Width="82.0">
+        <Note ID="50" FontSize="12.0" Position="3085.0,682.0" Width="82.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>round tripping</String>
             <ConnectedNoteIDs>10, 42, 51</ConnectedNoteIDs>
         </Note>
-        <Note ID="51" FontSize="12.0" Position="2378.86521,759.660434" Width="200.0">
+        <Note ID="51" FontSize="12.0" Position="3255.0,671.0" Width="200.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>important lesson: round trip from graph to code, how do you keep the metatdata generated within the session (and between changes)</String>
             <ConnectedNoteIDs>50, 52</ConnectedNoteIDs>
         </Note>
-        <Note ID="52" FontSize="12.0" Position="2369.659552,894.200859" Width="200.0">
+        <Note ID="52" FontSize="12.0" Position="3576.0,701.0" Width="115.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>round tripping between graph and Annotated AST.</String>
             <ConnectedNoteIDs>51, 53</ConnectedNoteIDs>
         </Note>
-        <Note ID="53" FontSize="12.0" Position="2521.323652,975.583753" Width="200.0">
+        <Note ID="53" FontSize="12.0" Position="3514.0,815.0" Width="200.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
@@ -383,30 +386,31 @@ to develop an editor, its useful to have at least one working application (alice
             <ConnectedNoteIDs>52, 60</ConnectedNoteIDs>
             <PointsToNoteIDs>60</PointsToNoteIDs>
         </Note>
-        <Note ID="55" FontSize="12.0" Position="3093.487877,989.962733" Width="169.0">
+        <Note ID="55" FontSize="12.0" Position="3784.0,990.0" Width="169.0">
             <Appearance>
                 <Alignment>Left</Alignment>
                 <Border Weight="1">0.477193 0.557066 0.76433</Border>
                 <Fill>0.840969 0.866828 0.925903</Fill>
             </Appearance>
             <String>Extended-ASG is ground truth</String>
-            <ConnectedNoteIDs>58, 60</ConnectedNoteIDs>
+            <ConnectedNoteIDs>58, 60, 69</ConnectedNoteIDs>
+            <PointsToNoteIDs>69</PointsToNoteIDs>
         </Note>
-        <Note ID="58" FontSize="12.0" Position="3268.671049,1065.753916" Width="200.0">
+        <Note ID="58" FontSize="12.0" Position="3959.0,1066.0" Width="200.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>atomic edits, diffs, they need to be in terms of the ground truth. </String>
             <ConnectedNoteIDs>55</ConnectedNoteIDs>
         </Note>
-        <Note ID="59" FontSize="12.0" Position="3031.379486,1130.034866" Width="200.0">
+        <Note ID="59" FontSize="12.0" Position="2995.0,843.0" Width="200.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>in a Max patch, you can put objects in the page that are not actually active (don’t have control flow reaching them). the only way to do this in text is to comment it out. whereas the ASG can represent a sub-graph- that isn’t reachable (not connected in a executable way) but is still there. </String>
-            <ConnectedNoteIDs>60</ConnectedNoteIDs>
+            <ConnectedNoteIDs>60, 65</ConnectedNoteIDs>
         </Note>
-        <Note ID="60" FontSize="12.0" Position="2796.230803,984.811772" Width="200.0">
+        <Note ID="60" FontSize="12.0" Position="3487.0,985.0" Width="200.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
@@ -414,66 +418,340 @@ to develop an editor, its useful to have at least one working application (alice
             <ConnectedNoteIDs>53, 55, 59</ConnectedNoteIDs>
             <PointsToNoteIDs>55</PointsToNoteIDs>
         </Note>
-        <Note ID="61" FontSize="12.0" Position="2396.277665,574.004295" Width="63.0">
+        <Note ID="61" FontSize="12.0" Position="3087.0,574.0" Width="63.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>definitions</String>
             <ConnectedNoteIDs>48</ConnectedNoteIDs>
         </Note>
-        <Note ID="62" FontSize="12.0" Position="2300.052173,546.134032" Width="93.0">
+        <Note ID="62" FontSize="12.0" Position="2990.0,546.0" Width="93.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>documentation/help</String>
             <ConnectedNoteIDs>48</ConnectedNoteIDs>
         </Note>
+        <Note ID="63" FontSize="12.0" Position="1895.0,750.0" Width="167.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+                <Border Weight="1">0.477193 0.557066 0.76433</Border>
+                <Fill>0.840969 0.866828 0.925903</Fill>
+            </Appearance>
+            <String>architecture of how this works</String>
+            <ConnectedNoteIDs>19, 66</ConnectedNoteIDs>
+        </Note>
+        <Note ID="64" FontSize="12.0" Position="2125.0,786.0" Width="113.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>switching between different versions</String>
+            <ConnectedNoteIDs>19, 66</ConnectedNoteIDs>
+        </Note>
+        <Note ID="65" FontSize="12.0" Position="2405.0,714.0" Width="82.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>determining if something is a part of the system or not</String>
+            <ConnectedNoteIDs>19, 59, 66</ConnectedNoteIDs>
+        </Note>
+        <Note ID="66" FontSize="12.0" Position="2149.0,603.0" Width="200.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>Graham highlighted that Lanier was doing essentially live coding of VR with collaborators, where they could remove a section of the code, and work on it and the system would keep running without it, then they could insert the new version of this chunk of code. in this sense it was like working with units</String>
+            <ConnectedNoteIDs>12, 63-65, 67</ConnectedNoteIDs>
+        </Note>
+        <Note ID="67" FontSize="12.0" Position="2362.0,574.0" Width="190.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>Jaron Lanier in Voices of VR #600</String>
+            <ConnectedNoteIDs>66</ConnectedNoteIDs>
+            <PointsToNoteIDs>66</PointsToNoteIDs>
+        </Note>
+        <Note ID="69" FontSize="12.0" Position="4070.0,909.0" Width="200.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+                <Border Weight="1">0.290055 0.1523 0.182215</Border>
+                <Fill>0.940019 0.892907 0.779716</Fill>
+            </Appearance>
+            <String>eventually this needs a formal schema</String>
+            <ConnectedNoteIDs>55</ConnectedNoteIDs>
+        </Note>
+        <Note ID="70" FontSize="12.0" Position="1705.0,15.0" Width="73.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>destinations</String>
+            <ConnectedNoteIDs>71-74</ConnectedNoteIDs>
+        </Note>
+        <Note ID="71" FontSize="12.0" Position="1498.0,118.0" Width="72.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>publications</String>
+            <ConnectedNoteIDs>70, 76</ConnectedNoteIDs>
+        </Note>
+        <Note ID="72" FontSize="12.0" Position="1607.0,128.0" Width="45.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>demos</String>
+            <ConnectedNoteIDs>70, 76</ConnectedNoteIDs>
+        </Note>
+        <Note ID="73" FontSize="12.0" Position="1702.0,123.0" Width="71.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>installations</String>
+            <ConnectedNoteIDs>70, 76</ConnectedNoteIDs>
+        </Note>
+        <Note ID="74" FontSize="12.0" Position="1802.0,93.0" Width="128.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>disseminated software</String>
+            <ConnectedNoteIDs>70, 76</ConnectedNoteIDs>
+        </Note>
+        <Note ID="76" FontSize="12.0" Position="1482.0,36.0" Width="74.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>conferences</String>
+            <ConnectedNoteIDs>71-74</ConnectedNoteIDs>
+        </Note>
+        <Note ID="77" FontSize="12.0" Position="1009.0,136.0" Width="200.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>intentional programming conversation</String>
+            <ConnectedNoteIDs>3, 78</ConnectedNoteIDs>
+        </Note>
+        <Note ID="78" FontSize="12.0" Position="1034.0,242.0" Width="200.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>being able to navigate different levels of representation from high level conceptual diagrams right down to the actual lowqest detail of connecting operations together</String>
+            <ConnectedNoteIDs>77, 81, 83</ConnectedNoteIDs>
+        </Note>
+        <Note ID="81" FontSize="12.0" Position="917.0,383.0" Width="195.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>this scapple as one example of this</String>
+            <ConnectedNoteIDs>78, 84</ConnectedNoteIDs>
+        </Note>
+        <Note ID="83" FontSize="12.0" Position="1307.0,230.0" Width="200.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>having a mic on in the space or ready to be turned on</String>
+            <ConnectedNoteIDs>78, 84</ConnectedNoteIDs>
+        </Note>
+        <Note ID="84" FontSize="12.0" Position="1226.0,369.0" Width="200.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>“affordances at your fingertips at the rate of ideation”</String>
+            <ConnectedNoteIDs>81, 83, 85-86</ConnectedNoteIDs>
+        </Note>
+        <Note ID="85" FontSize="12.0" Position="1171.0,460.0" Width="121.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>ties in with the library</String>
+            <ConnectedNoteIDs>84</ConnectedNoteIDs>
+        </Note>
+        <Note ID="86" FontSize="12.0" Position="1396.0,312.0" Width="169.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>“connective tissue of liveness”</String>
+            <ConnectedNoteIDs>84</ConnectedNoteIDs>
+        </Note>
+        <Note ID="87" FontSize="12.0" Position="1318.0,873.0" Width="138.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+                <Border Weight="1">0.747881 0.366532 0.542813</Border>
+                <Fill>0.918452 0.807302 0.863467</Fill>
+            </Appearance>
+            <String>make another scapple of just ‘making a visual editor in VR’, and that can become our roadmap</String>
+            <ConnectedNoteIDs>16, 90</ConnectedNoteIDs>
+        </Note>
+        <Note ID="89" FontSize="12.0" Position="619.0,612.0" Width="200.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>do a lot of the editing and display using web workers and using local server</String>
+            <ConnectedNoteIDs>90, 92-96</ConnectedNoteIDs>
+        </Note>
+        <Note ID="90" FontSize="12.0" Position="803.0,789.0" Width="200.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>in VR you can’t have dropouts or frame issues</String>
+            <ConnectedNoteIDs>87, 89, 91</ConnectedNoteIDs>
+        </Note>
+        <Note ID="91" FontSize="12.0" Position="853.0,876.0" Width="200.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>no call you make should never EVER take longer than a millisecond</String>
+            <ConnectedNoteIDs>90</ConnectedNoteIDs>
+        </Note>
+        <Note ID="92" FontSize="12.0" Position="852.0,623.0" Width="129.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>web workers are multiple threads</String>
+            <ConnectedNoteIDs>89</ConnectedNoteIDs>
+        </Note>
+        <Note ID="93" FontSize="12.0" Position="148.0,593.0" Width="200.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>option 1: can we move the graphical rendering into a background thread. we could write whatever code we want and the rendering will be smooth</String>
+            <ConnectedNoteIDs>89</ConnectedNoteIDs>
+        </Note>
+        <Note ID="94" FontSize="12.0" Position="235.0,727.0" Width="200.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>option 2: rendering in the main thread anad everything else in other threads (harder)</String>
+            <ConnectedNoteIDs>89</ConnectedNoteIDs>
+        </Note>
+        <Note ID="95" FontSize="12.0" Position="453.0,768.0" Width="111.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>option 3: running a local node server. server is doing all the work and the browser just draws the scene. in which case webRTC might likely be needed, in terms of </String>
+            <ConnectedNoteIDs>89</ConnectedNoteIDs>
+        </Note>
+        <Note ID="96" FontSize="12.0" Position="411.0,555.0" Width="108.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>WebVr &amp; WebRTC</String>
+            <ConnectedNoteIDs>89</ConnectedNoteIDs>
+        </Note>
+        <Note ID="97" FontSize="12.0" Position="99.0,105.0" Width="57.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+                <Border Weight="1">0.747881 0.366532 0.542813</Border>
+                <Fill>0.918452 0.807302 0.863467</Fill>
+            </Appearance>
+            <String>1st step: </String>
+            <ConnectedNoteIDs>98-99</ConnectedNoteIDs>
+        </Note>
+        <Note ID="98" FontSize="12.0" Position="227.0,111.0" Width="99.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>see each other in multiple headsets</String>
+            <ConnectedNoteIDs>97</ConnectedNoteIDs>
+        </Note>
+        <Note ID="99" FontSize="12.0" Position="134.396071,191.450568" Width="96.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>see graphical representation of the code and edit it in real-time</String>
+            <ConnectedNoteIDs>97, 103</ConnectedNoteIDs>
+            <PointsToNoteIDs>103</PointsToNoteIDs>
+        </Note>
+        <Note ID="101" FontSize="12.0" Position="286.0,214.0" Width="20.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>.</String>
+            <ConnectedNoteIDs>16</ConnectedNoteIDs>
+            <PointsToNoteIDs>16</PointsToNoteIDs>
+        </Note>
+        <Note ID="102" FontSize="12.0" Position="139.292927,370.129432" Width="200.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>minimal list of atomic edits to a patcher</String>
+            <ConnectedNoteIDs>103</ConnectedNoteIDs>
+        </Note>
+        <Note ID="103" FontSize="12.0" Position="95.88571,346.250926" Width="20.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>1.</String>
+            <ConnectedNoteIDs>99, 102, 104</ConnectedNoteIDs>
+            <PointsToNoteIDs>104</PointsToNoteIDs>
+        </Note>
+        <Note ID="104" FontSize="12.0" Position="92.88571,433.250926" Width="22.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>2. </String>
+            <ConnectedNoteIDs>103, 105</ConnectedNoteIDs>
+        </Note>
+        <Note ID="105" FontSize="12.0" Position="135.01518,449.658153" Width="200.0">
+            <Appearance>
+                <Alignment>Left</Alignment>
+            </Appearance>
+            <String>Build an OT for graph datastructures</String>
+            <ConnectedNoteIDs>104</ConnectedNoteIDs>
+        </Note>
     </Notes>
     <BackgroundShapes>
-        <Shape ID="21" Sticky="No" Position="1332.488281,947.745357" Width="219.0" Height="112.0">
+        <Shape ID="82" Sticky="No" Position="791.0,64.0" Width="59.0" Height="56.0">
             <Appearance>
                 <Border Weight="1"></Border>
             </Appearance>
         </Shape>
-        <Shape ID="43" Sticky="No" Position="2707.424834,405.923571" Width="131.0" Height="147.112935">
+        <Shape ID="21" Sticky="No" Position="2023.0,948.0" Width="219.0" Height="112.0">
+            <Appearance>
+                <Border Weight="1"></Border>
+            </Appearance>
+        </Shape>
+        <Shape ID="43" Sticky="No" Position="3398.0,406.0" Width="131.0" Height="147.11293">
+            <Appearance>
+                <Border Weight="1"></Border>
+            </Appearance>
+        </Shape>
+        <Shape ID="100" Sticky="No" Position="88.0,89.0" Width="249.0" Height="194.0">
             <Appearance>
                 <Border Weight="1"></Border>
             </Appearance>
         </Shape>
     </BackgroundShapes>
-    <AutoFit>1, 3-6, 9-11, 14, 16, 19-20, 24-25, 30, 33, 36, 41-42, 44-45, 50, 55, 61</AutoFit>
+    <AutoFit>1, 3-6, 9-11, 14, 16, 19, 24-25, 30, 33, 36, 41-42, 44-45, 50, 55, 61, 63, 67, 70-74, 76, 81-82, 85-86, 96-97, 101, 103-104</AutoFit>
     <NoteStyles>
-        <Style Name="Title Text" ID="635BECB9-383A-47D2-B5B9-D7EDF3D454F0" AffectFontStyle="Yes" AffectAlignment="Yes" AffectTextColor="No" AffectNoteBody="No" AffectFade="No">
-            <FontSize>28.0</FontSize>
-            <IsBold>Yes</IsBold>
-        </Style>
-        <Style Name="Red Text" ID="329DFFC5-C464-442C-8FC5-65F3E6BF2D53" AffectFontStyle="No" AffectAlignment="No" AffectTextColor="Yes" AffectNoteBody="No" AffectFade="No">
-            <TextColor>1.0 0.0 0.0</TextColor>
+        <Style Name="Blue Bubble" ID="061847BF-D2C9-41C6-BD76-6F2075575FE4" AffectFontStyle="No" AffectAlignment="No" AffectTextColor="No" AffectNoteBody="Yes" AffectFade="No">
+            <BorderThickness>1</BorderThickness>
+            <BorderColor>0.477193 0.557066 0.76433</BorderColor>
+            <FillColor>0.840969 0.866828 0.925903</FillColor>
         </Style>
         <Style Name="Brown Bubble" ID="7E1A7148-6325-4AE8-B313-21FCD29C939A" AffectFontStyle="No" AffectAlignment="No" AffectTextColor="No" AffectNoteBody="Yes" AffectFade="No">
             <BorderThickness>1</BorderThickness>
             <BorderColor>0.290055 0.1523 0.182215</BorderColor>
             <FillColor>0.940019 0.892907 0.779716</FillColor>
         </Style>
-        <Style Name="Yellow Bubble" ID="22CC8AA7-7031-4DA8-BEEB-3EE1E92B48BC" AffectFontStyle="No" AffectAlignment="No" AffectTextColor="No" AffectNoteBody="Yes" AffectFade="No">
-            <BorderThickness>1</BorderThickness>
-            <BorderColor>0.756763 0.785592 0.373258</BorderColor>
-            <FillColor>0.906773 0.910625 0.634363</FillColor>
-        </Style>
         <Style Name="Green Bubble" ID="F777EB87-A933-4F11-8EF0-65B324C52674" AffectFontStyle="No" AffectAlignment="No" AffectTextColor="No" AffectNoteBody="Yes" AffectFade="No">
             <BorderThickness>1</BorderThickness>
             <BorderColor>0.331867 0.609932 0.356197</BorderColor>
             <FillColor>0.790123 0.882328 0.80198</FillColor>
         </Style>
-        <Style Name="Blue Bubble" ID="061847BF-D2C9-41C6-BD76-6F2075575FE4" AffectFontStyle="No" AffectAlignment="No" AffectTextColor="No" AffectNoteBody="Yes" AffectFade="No">
-            <BorderThickness>1</BorderThickness>
-            <BorderColor>0.477193 0.557066 0.76433</BorderColor>
-            <FillColor>0.840969 0.866828 0.925903</FillColor>
-        </Style>
         <Style Name="Pink Bubble" ID="2FF9210D-0C58-42EA-8D9E-41769926F2DD" AffectFontStyle="No" AffectAlignment="No" AffectTextColor="No" AffectNoteBody="Yes" AffectFade="No">
             <BorderThickness>1</BorderThickness>
             <BorderColor>0.747881 0.366532 0.542813</BorderColor>
             <FillColor>0.918452 0.807302 0.863467</FillColor>
+        </Style>
+        <Style Name="Red Text" ID="329DFFC5-C464-442C-8FC5-65F3E6BF2D53" AffectFontStyle="No" AffectAlignment="No" AffectTextColor="Yes" AffectNoteBody="No" AffectFade="No">
+            <TextColor>1.0 0.0 0.0</TextColor>
+        </Style>
+        <Style Name="Title Text" ID="635BECB9-383A-47D2-B5B9-D7EDF3D454F0" AffectFontStyle="Yes" AffectAlignment="Yes" AffectTextColor="No" AffectNoteBody="No" AffectFade="No">
+            <FontSize>28.0</FontSize>
+            <IsBold>Yes</IsBold>
+        </Style>
+        <Style Name="Yellow Bubble" ID="22CC8AA7-7031-4DA8-BEEB-3EE1E92B48BC" AffectFontStyle="No" AffectAlignment="No" AffectTextColor="No" AffectNoteBody="Yes" AffectFade="No">
+            <BorderThickness>1</BorderThickness>
+            <BorderColor>0.756763 0.785592 0.373258</BorderColor>
+            <FillColor>0.906773 0.910625 0.634363</FillColor>
         </Style>
     </NoteStyles>
     <UISettings>
