@@ -20,30 +20,22 @@ let deltas = [
 	{ op:"connect", paths: ["child.a.signal", "b"] }
 ];
 
-a = {
-	pos: [10, 10]
-}
-
-b = {
-	pos: a.pos
-}
-
-b = {
-	pos: [a.pos[0], a.pos[1]]
-}
-
 function deepEqual(a, b) {
 	// TODO FIXME expensive lazy way:
 	return JSON.stringify(a) == JSON.stringify(b);
 }
 
+function deepCopy(a) {
+	// TODO FIXME expensive lazy way:
+	return JSON.parse(JSON.stringify(a));
+}
+
 function copyProps(src, dst) {
 	for (let k in src) {
 		if (k == "op" || k == "path") continue;
-
 		// recursive objects (deep copy)
 		// TODO FIXME expensive lazy way:
-		dst[k] = JSON.parse(JSON.stringify(src[k]));
+		dst[k] = deepCopy(src[k]);
 	}
 	return dst;
 }
