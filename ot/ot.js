@@ -20,26 +20,46 @@ let deltas = [
 	{ op:"connect", paths: ["child.a.signal", "b"] }
 ];
 
+a = {
+	pos: [10, 10]
+}
+
+b = {
+	pos: a.pos
+}
+
+b = {
+	pos: [a.pos[0], a.pos[1]]
+}
+
+function deepEqual(a, b) {
+	// TODO FIXME expensive lazy way:
+	return JSON.stringify(a) == JSON.stringify(b);
+}
+
 function copyProps(src, dst) {
 	for (let k in src) {
 		if (k == "op" || k == "path") continue;
 
-		// TODO: recursive objects?
-		dst[k] = src[k];
+		// recursive objects (deep copy)
+		// TODO FIXME expensive lazy way:
+		dst[k] = JSON.parse(JSON.stringify(src[k]));
 	}
 	return dst;
 }
 
-function findPath(root, path) {
-	let steps = path.split(".");
-	let n = root;
-	for (let k in steps) {
-		assert(n[k], "failed to find path");
-		n = n[k];
-	}
-	return n;
-}
+// function findPath(root, path) {
+// 	let steps = path.split(".");
+// 	let n = root;
+// 	for (let k in steps) {
+// 		assert(n[k], "failed to find path");
+// 		n = n[k];
+// 	}
+// 	return n;
+// }
 
+// given path "a.b.c.d", returns object root.a.b.c and string "d"
+// throws error if root.a.b.c.d doesn't exist
 function findPathContainer(root, path) {
 	let steps = path.split(".");
 	let last = steps.pop();
@@ -51,6 +71,9 @@ function findPathContainer(root, path) {
 	return [n, last];
 }
 
+// given path "a.b.c.d", creates object root.a.b.c.d
+// throws error if root.a.b.c doesn't exist
+// throws error if root.a.b.c.d already exists
 function makePath(root, path) {
 	let steps = path.split(".");
 	let last = steps.pop();
@@ -65,6 +88,8 @@ function makePath(root, path) {
 	return o;
 }
 
+// given a delta it returns the inverse operation 
+// such that applying inverse(delta) undoes all changes contained in delta
 function inverseDelta(delta) {
 	if (Array.isArray(delta)) {
 		let res = [];
@@ -109,46 +134,46 @@ function inverseDelta(delta) {
 }
 
 function applyDeltasToGraph(graph, deltas) {
-	for (let d of deltas) {
-		if (Array.isArray(d)) {
+	if (Array.isArray(deltas)) {
+		for (let d of deltas) {
 			applyDeltasToGraph(graph, d);
-		} else {
-			switch (d.op) {
-				case "newnode": {
-					let o = makePath(graph.nodes, d.path);
-					copyProps(d, o._props);
-				} break;
-				case "delnode": {
-					let [ctr, name] = findPathContainer(graph.nodes, d.path);
-					let o = ctr[name];
-					assert(o, "delnode failed: path not found");
-					// assert o._props match delta props
-					for (let k in o._props) {
-						assert(o._props[k] == d[k], "delnode failed; properties do not match");
-					}
-					delete ctr[name];
-				} break;
+		}
+	} else {
+		switch (deltas.op) {
+			case "newnode": {
+				let o = makePath(graph.nodes, deltas.path);
+				copyProps(deltas, o._props);
+			} break;
+			case "delnode": {
+				let [ctr, name] = findPathContainer(graph.nodes, deltas.path);
+				let o = ctr[name];
+				assert(o, "delnode failed: path not found");
+				// assert o._props match delta props:
+				for (let k in o._props) {
+					assert(deepEqual(o._props[k], deltas[k]), "delnode failed; properties do not match");
+				}
+				delete ctr[name];
+			} break;
 
-				case "connect": {
-					// TODO: assert connection does not yet exist
-					assert(undefined == graph.arcs.find(e => e[0]==d.paths[0] && e[1]==d.paths[1]), "connect failed: arc already exists");
+			case "connect": {
+				// TODO: assert connection does not yet exist
+				assert(undefined == graph.arcs.find(e => e[0]==deltas.paths[0] && e[1]==deltas.paths[1]), "connect failed: arc already exists");
 
-					graph.arcs.push([ d.paths[0], d.paths[1] ]);
-				} break;
-				case "disconnect": {
-					// find matching arc; there should only be 1.
-					let found = false;
-					for (let i in graph.arcs) {
-						let a = graph.arcs[i];
-						if (a[0] == d.paths[0] && a[1] == d.paths[1]) {
-							assert(!found, "disconnect failed: more than one matching arc");
-							found = true;
-							graph.arcs.splice(i, 1);
-						}
+				graph.arcs.push([ deltas.paths[0], deltas.paths[1] ]);
+			} break;
+			case "disconnect": {
+				// find matching arc; there should only be 1.
+				let found = false;
+				for (let i in graph.arcs) {
+					let a = graph.arcs[i];
+					if (a[0] == deltas.paths[0] && a[1] == deltas.paths[1]) {
+						assert(!found, "disconnect failed: more than one matching arc");
+						found = true;
+						graph.arcs.splice(i, 1);
 					}
-					assert(found, "disconnect failed: no matching arc found");
-				} break;
-			}
+				}
+				assert(found, "disconnect failed: no matching arc found");
+			} break;
 		}
 	}
 }
