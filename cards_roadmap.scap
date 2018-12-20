@@ -651,7 +651,7 @@ to develop an editor, its useful to have at least one working application (alice
             <String>see each other in multiple headsets</String>
             <ConnectedNoteIDs>97</ConnectedNoteIDs>
         </Note>
-        <Note ID="99" FontSize="12.0" Position="134.396071,191.450568" Width="96.0">
+        <Note ID="99" FontSize="12.0" Position="134.0,191.0" Width="96.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
@@ -667,14 +667,14 @@ to develop an editor, its useful to have at least one working application (alice
             <ConnectedNoteIDs>16</ConnectedNoteIDs>
             <PointsToNoteIDs>16</PointsToNoteIDs>
         </Note>
-        <Note ID="102" FontSize="12.0" Position="139.292927,370.129432" Width="200.0">
+        <Note ID="102" FontSize="12.0" Position="139.0,370.0" Width="200.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>minimal list of atomic edits to a patcher</String>
             <ConnectedNoteIDs>103</ConnectedNoteIDs>
         </Note>
-        <Note ID="103" FontSize="12.0" Position="95.88571,346.250926" Width="20.0">
+        <Note ID="103" FontSize="12.0" Position="96.0,346.0" Width="20.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
@@ -682,14 +682,14 @@ to develop an editor, its useful to have at least one working application (alice
             <ConnectedNoteIDs>99, 102, 104</ConnectedNoteIDs>
             <PointsToNoteIDs>104</PointsToNoteIDs>
         </Note>
-        <Note ID="104" FontSize="12.0" Position="92.88571,433.250926" Width="22.0">
+        <Note ID="104" FontSize="12.0" Position="93.0,433.0" Width="22.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>
             <String>2. </String>
             <ConnectedNoteIDs>103, 105</ConnectedNoteIDs>
         </Note>
-        <Note ID="105" FontSize="12.0" Position="135.01518,449.658153" Width="200.0">
+        <Note ID="105" FontSize="12.0" Position="135.0,450.0" Width="200.0">
             <Appearance>
                 <Alignment>Left</Alignment>
             </Appearance>

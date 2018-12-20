@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "test.js",
-    "start": "node server.js"
+    "start": "nodemon server.js -L"
   },
   "repository": {
     "type": "git",
@@ -18,11 +18,17 @@
   },
   "homepage": "https://github.com/worldmaking/cards#readme",
   "dependencies": {
+    "all-object-keys": "^1.1.0",
     "always-done": "^1.1.0",
+    "assign-deep": "^1.0.0",
     "codemirror": "^5.40.2",
     "express": "4.16.3",
     "ip": "^1.1.5",
+    "jessy": "^2.0.1",
     "jot": "git+https://github.com/joshdata/jot.git",
+    "lodash": "^4.17.11",
+    "nodemon": "^1.18.6",
+    "set-value": "^3.0.0",
     "spawncommand": "^2.0.1",
     "vorpal": "^1.12.0",
     "web-terminal": "^0.7.0",
