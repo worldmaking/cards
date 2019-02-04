@@ -1,24 +1,12 @@
 let assert = require ("assert");
 
 // see https://github.com/worldmaking/cards/wiki/List-of-Operational-Transforms
+/*
+	Every op should be invertible (which means, destructive edits must include full detail of what is to be deleted)
+	Changes are rebased by graph path (rather than character position as in text documents)
 
-let deltas = [
-	[
-	  { op:"newnode", path:"a", kind:"noise", pos:[10,10] }, 
-	  { op:"newnode", path:"a.signal", kind:"outlet" }, 
-	],
-	[
-	  { op:"newnode", path:"b", kind:"dac", pos:[10,50] },
-	  { op:"newnode", path:"b.source", kind:"inlet" }, 
-	],
-	{ op:"connect", paths: ["a.signal", "b.source"] },
-	{ op:"newnode", path:"child", kind:"group", pos:[50,50] },
-	[
-	  { op:"newnode", path:"child.a", kind:"beep", pos:[10,10] },
-	  { op:"newnode", path:"child.a.signal", kind:"outlet" }
-	], 
-	{ op:"connect", paths: ["child.a.signal", "b"] }
-];
+	Simultaneous edits must be merged: the second is rebased by the first. 
+*/
 
 function deepEqual(a, b) {
 	// TODO FIXME expensive lazy way:
@@ -30,7 +18,9 @@ function deepCopy(a) {
 	return JSON.parse(JSON.stringify(a));
 }
 
-function copyProps(src, dst) {
+// copy all properties from src to dst
+// excepting any reserved keys (op, path)
+let copyProps = function(src, dst) {
 	for (let k in src) {
 		if (k == "op" || k == "path") continue;
 		// recursive objects (deep copy)
@@ -40,9 +30,11 @@ function copyProps(src, dst) {
 	return dst;
 }
 
-// function findPath(root, path) {
+// (unused)
+// // find a path within a tree:
+// let findPath = function(tree, path) {
 // 	let steps = path.split(".");
-// 	let n = root;
+// 	let n = tree;
 // 	for (let k in steps) {
 // 		assert(n[k], "failed to find path");
 // 		n = n[k];
@@ -50,23 +42,28 @@ function copyProps(src, dst) {
 // 	return n;
 // }
 
-// given path "a.b.c.d", returns object root.a.b.c and string "d"
-// throws error if root.a.b.c.d doesn't exist
-function findPathContainer(root, path) {
+// given a tree, find the node that contains last item on path
+// returns [undefined, path] if the path could not be fully resolved
+let findPathContainer = function(tree, path) {
 	let steps = path.split(".");
-	let last = steps.pop();
-	let n = root;
-	for (let k of steps) {
-		assert(n[k], "failed to find path");
-		n = n[k];
+	let last;
+	let container;
+	let node = tree;
+	for (let i=0; i<steps.length; i++) {
+		let k = steps[i]
+		//assert(node[k], "failed to find path: "+k);
+		if (!node[k]) return [undefined, k];
+		last = k;
+		container = node;
+		node = node[k];
 	}
-	return [n, last];
+	return [container, last];
 }
 
 // given path "a.b.c.d", creates object root.a.b.c.d
 // throws error if root.a.b.c doesn't exist
 // throws error if root.a.b.c.d already exists
-function makePath(root, path) {
+let makePath = function(root, path) {
 	let steps = path.split(".");
 	let last = steps.pop();
 	let n = root;
@@ -82,7 +79,7 @@ function makePath(root, path) {
 
 // given a delta it returns the inverse operation 
 // such that applying inverse(delta) undoes all changes contained in delta
-function inverseDelta(delta) {
+let inverseDelta = function(delta) {
 	if (Array.isArray(delta)) {
 		let res = [];
 		// invert in reverse order:
@@ -125,7 +122,7 @@ function inverseDelta(delta) {
 	}
 }
 
-function applyDeltasToGraph(graph, deltas) {
+let applyDeltasToGraph = function (graph, deltas) {
 	if (Array.isArray(deltas)) {
 		for (let d of deltas) {
 			applyDeltasToGraph(graph, d);
@@ -146,7 +143,6 @@ function applyDeltasToGraph(graph, deltas) {
 				}
 				delete ctr[name];
 			} break;
-
 			case "connect": {
 				// TODO: assert connection does not yet exist
 				assert(undefined == graph.arcs.find(e => e[0]==deltas.paths[0] && e[1]==deltas.paths[1]), "connect failed: arc already exists");
@@ -170,17 +166,6 @@ function applyDeltasToGraph(graph, deltas) {
 	}
 }
 
-function graphFromDeltas(deltas) {
-	let graph = {
-		nodes: {},
-		arcs: []	
-	};
-
-	applyDeltasToGraph(graph, deltas) 
-
-	return graph;
-}
-
 function nodesToDeltas(nodes, deltas, pathprefix) {
 	for (let name in nodes) {
 		if (name == "_props") continue;
@@ -200,32 +185,114 @@ function nodesToDeltas(nodes, deltas, pathprefix) {
 	return deltas;
 }
 
-function deltasFromGraph(graph, deltas) {
-	nodesToDeltas(graph.nodes, deltas, "");
-
-	for (let a of graph.arcs) {
-		// TODO: assert that the paths exist?
-		deltas.push({
-			op: "connect",
-			paths: [ a[0], a[1] ]
-		})
+let propToString = function(prop) {
+	if (typeof prop == "number") {
+		return prop;
+	} else if (typeof prop == "string") {
+		return `"${prop}"`;
+	} else if (Array.isArray(prop)) {
+		return `[${prop.map(propToString).join(",")}]`
 	}
-	return deltas;
 }
 
+let propsToString = function(props) {
+	let res = [];
+	for (let k of Object.keys(props)) {
+		let v = props[k];
+		
+		res.push(`${k}=${propToString(v)}`)
+	}
+	return res.join(", ");
+}
 
-let g = graphFromDeltas(deltas);
+let nodeToString = function(node, indent) {
+	let keys = Object.keys(node);
+	let children = [];
+	let props = "";
+	if (node._props) {
+		props = `[${propsToString(node._props, indent)}]`;
+	}
+	for (let key of keys) {
+		if (key != "_props") {
+			let s = `${"  ".repeat(indent)}${key} ${nodeToString(node[key], indent+1)}`;
+			children.push(s);
+		}
+	}
 
-console.log("graph: ", JSON.stringify(g, null, "  "));
+	if (children.length > 0) {
+		if (props) props += `\n`
+		props += `${children.join("\n")}`;
+	} 
 
-let d = deltasFromGraph(g, [])
+	return props;
+}
 
-console.log("deltas: ", JSON.stringify(d, null, "  "));
+let graphToString = function(graph) {
+	assert(graph.nodes);
+	assert(graph.arcs);
+	let arcstrings = [];
+	for (let a of graph.arcs) {
+		arcstrings.push(`${a[0]} -> ${a[1]}`);
+	}
+	return `${nodeToString(graph.nodes, 0)}\n${arcstrings.join("\n")}`;
+}
 
-let id = inverseDelta(d);
+let deltaToString = function(delta) {
+	// { op:"newnode", path:"a", kind:"noise", pos:[10,10] }, 
+	let args = [];
+	for (let k of Object.keys(delta)) {
+		if (k != "op" && k != "path" && k != "paths") {
+			args.push(`${k}=${propToString(delta[k])}`);
+		}
+	}
+	let path = delta.path;
+	if (!path && delta.paths) {
+		path = delta.paths.join(", ");
+	}
+	return `${delta.op} (${path}) ${args.join(", ")}`
+}
 
-console.log("deltas: ", JSON.stringify(id, null, "  "));
+let deltasToString = function(deltas, indent) {
+	if (indent == undefined) indent = 0
+	if (Array.isArray(deltas)) {
+		return deltas.map(function(v) {
+			return deltasToString(v, indent+1)
+		}).join(`\n${"  ".repeat(indent)}`);
+	} else {
+		return deltaToString(deltas);
+	}
+}
 
-applyDeltasToGraph(g, id);
+module.exports = {
 
-console.log("graph: ", JSON.stringify(g, null, "  "));
+	graphFromDeltas(deltas) {
+		let graph = {
+			nodes: {},
+			arcs: []	
+		};
+	
+		applyDeltasToGraph(graph, deltas) 
+	
+		return graph;
+	},
+
+	deltasFromGraph(graph, deltas) {
+		nodesToDeltas(graph.nodes, deltas, "");
+	
+		for (let a of graph.arcs) {
+			// TODO: assert that the paths exist?
+			deltas.push({
+				op: "connect",
+				paths: [ a[0], a[1] ]
+			})
+		}
+		return deltas;
+	},
+
+	findPathContainer: findPathContainer,
+	inverseDelta: inverseDelta,
+	applyDeltasToGraph: applyDeltasToGraph,
+
+	graphToString: graphToString,
+	deltasToString: deltasToString,
+}
